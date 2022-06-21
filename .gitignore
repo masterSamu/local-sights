@@ -25,3 +25,8 @@ yarn-error.log*
 
 .firebase*
 firebase.*
+firestore.*
+storage.rules
+firestore-debug.log
+
+emulator-data
