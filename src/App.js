@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import sightService from "./services/sights";
 import { useDispatch, useSelector } from "react-redux";
+import { Routes, Route } from "react-router-dom";
 import { initializeSights } from "./reducers/sightReducer";
 import { Button, Card, CardGroup, Container } from "react-bootstrap";
 import "./styles/App.css";
-
+import Login from "./pages/Login";
 function App() {
   const dispatch = useDispatch();
   const sights = useSelector((state) => state.sights);
@@ -26,6 +27,9 @@ function App() {
 
   return (
     <Container>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+      </Routes>
       <CardGroup>
         {sights.map((sight) => {
           return (
