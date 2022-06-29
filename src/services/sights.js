@@ -26,7 +26,7 @@ export const addLike = async (docId, userId) => {
   const docRef = doc(db, "sights", docId);
   await updateDoc(docRef,{
     "likes.positive": increment(1),
-    "likes.likedUsers": arrayUnion({userId}),
+    "likes.likedUsers": arrayUnion({userId, type: "positive"}),
   });
 };
 
@@ -34,7 +34,7 @@ export const addDislike = async (docId, userId) => {
   const docRef = doc(db, "sights", docId);
   await updateDoc(docRef,{
     "likes.negative": increment(1),
-    "likes.likedUsers": arrayUnion({userId}),
+    "likes.likedUsers": arrayUnion({userId, type: "negative"}),
   });
 };
 
@@ -42,9 +42,19 @@ export const removeLike = async (docId, userId, likes) => {
   const docRef = doc(db, "sights", docId);
   await updateDoc(docRef,{
     "likes.positive": likes -1,
-    "likes.likedUsers": arrayRemove({userId}),
+    "likes.likedUsers": arrayRemove({userId, type: "positive"}),
   });
 };
+
+export const removeDislike = async (docId, userId, likes) => {
+  const docRef = doc(db, "sights", docId);
+  await updateDoc(docRef,{
+    "likes.negative": likes -1,
+    "likes.likedUsers": arrayRemove({userId, type: "negative"}),
+  });
+};
+
+
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll };
