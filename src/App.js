@@ -1,14 +1,19 @@
 import { useEffect } from "react";
 import sightService from "./services/sights";
+import userService, { extractUserProperties } from "./services/user";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import { initializeSights } from "./reducers/sightReducer";
-import { Button, Card, CardGroup, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import "./styles/App.css";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { setUser } from "./reducers/userReducer";
+
 function App() {
   const dispatch = useDispatch();
-  const sights = useSelector((state) => state.sights);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,28 +30,40 @@ function App() {
     fetchData();
   }, [dispatch]);
 
+  useEffect(() => {
+    try {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser) {
+          const loggedUser = extractUserProperties(currentUser);
+          dispatch(setUser(loggedUser));
+        } else {
+          dispatch(setUser(null));
+        }
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [dispatch]);
+
+  const logOut = () => {
+    const loggedOut = userService.logOut();
+    if (loggedOut) {
+      dispatch(setUser(null));
+    } else {
+      console.log("Could not log out");
+    }
+  };
+
+  console.log("main", user);
+
   return (
     <Container>
+      {user && <button onClick={logOut}>Log out</button>}
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
       </Routes>
-      <CardGroup>
-        {sights.map((sight) => {
-          return (
-            <Card key={sight.id} className="sight-card">
-              <Card.Img variant="top" src={sight.imageUrl} />
-              <Card.Body>
-                <Card.Title>{sight.name}</Card.Title>
-                <Card.Subtitle>{sight.category}</Card.Subtitle>
-                <Card.Text>{sight.description}</Card.Text>
-                <Button>Open Map</Button>
-              </Card.Body>
-              <Card.Footer>Uploaded by @{sight.userId}</Card.Footer>
-            </Card>
-          );
-        })}
-      </CardGroup>
-      {sights.name}
     </Container>
   );
 }

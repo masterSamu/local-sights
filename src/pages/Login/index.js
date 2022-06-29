@@ -1,18 +1,22 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../reducers/userReducer";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../reducers/userReducer";
 import { Form, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import userService from "../../services/user";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(email, password));
-    if (user) {
+    const loggedUser = await userService.login(email, password);
+    if (loggedUser) {
+      dispatch(setUser(loggedUser));
+      navigate("/");
       setEmail("");
       setPassword("");
     }
@@ -20,7 +24,7 @@ const Login = () => {
 
   return (
     <Form onSubmit={handleLogin}>
-      <Form.Group className="mb-3" controlId="formBasicEmail" hasValidation>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control
           type="email"
