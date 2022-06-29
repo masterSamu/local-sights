@@ -1,0 +1,11 @@
+.sight-card {
+    max-width: 300px;
+}
+
+.sight-card img {
+    object-fit: cover;
+}
+
+.sight-card .like-container .col {
+    justify-content: center;
+}
