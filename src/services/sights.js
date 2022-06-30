@@ -6,7 +6,6 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
-  increment
 } from "firebase/firestore";
 
 const sightsRef = collection(db, "sights");
@@ -22,39 +21,50 @@ const getAll = async () => {
   return data;
 };
 
-export const addLike = async (docId, userId) => {
+export const addLike = async (docId, userId, likes) => {
   const docRef = doc(db, "sights", docId);
-  await updateDoc(docRef,{
-    "likes.positive": increment(1),
-    "likes.likedUsers": arrayUnion({userId, type: "positive"}),
+  await updateDoc(docRef, {
+    "likes.positive": likes + 1,
+    "likes.likedUsers": arrayUnion({ userId, type: "positive" }),
   });
 };
 
-export const addDislike = async (docId, userId) => {
+export const addDislike = async (docId, userId, likes) => {
   const docRef = doc(db, "sights", docId);
-  await updateDoc(docRef,{
-    "likes.negative": increment(1),
-    "likes.likedUsers": arrayUnion({userId, type: "negative"}),
+  await updateDoc(docRef, {
+    "likes.negative": likes + 1,
+    "likes.likedUsers": arrayUnion({ userId, type: "negative" }),
   });
 };
 
 export const removeLike = async (docId, userId, likes) => {
-  const docRef = doc(db, "sights", docId);
-  await updateDoc(docRef,{
-    "likes.positive": likes -1,
-    "likes.likedUsers": arrayRemove({userId, type: "positive"}),
-  });
+  if (likes < 1) return false;
+  try {
+    const docRef = doc(db, "sights", docId);
+    await updateDoc(docRef, {
+      "likes.positive": likes - 1,
+      "likes.likedUsers": arrayRemove({ userId, type: "positive" }),
+    });
+    return true;
+
+  } catch(error) {
+    return false;
+  }
 };
 
 export const removeDislike = async (docId, userId, likes) => {
-  const docRef = doc(db, "sights", docId);
-  await updateDoc(docRef,{
-    "likes.negative": likes -1,
-    "likes.likedUsers": arrayRemove({userId, type: "negative"}),
-  });
+  if (likes < 1) return false;
+  try {
+    const docRef = doc(db, "sights", docId);
+    await updateDoc(docRef, {
+      "likes.negative": likes - 1,
+      "likes.likedUsers": arrayRemove({ userId, type: "negative" }),
+    });
+    return true;
+  } catch(error) {
+    return false;
+  }
 };
-
-
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll };

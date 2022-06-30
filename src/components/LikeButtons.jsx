@@ -24,32 +24,26 @@ const LikeButtons = ({ sight, update }) => {
   // saman reducrein.
   const removeLikes = async () => {
     if (likesForCurrentUser.type === "positive") {
-      console.log("removing positive likes", likesForCurrentUser.type);
       await removeLike(sight.id, user.id, likes.positive);
-      console.log("likedUsers before filter", likes.likedUsers)
       const likedUsers = likes.likedUsers.filter(
         (item) => item.userId !== user.id
       );
-      console.log("removed positive likes", likedUsers);
       const newLikes = { ...likes, positive: likes.positive - 1, likedUsers };
       const newSight = { ...sight, likes: newLikes };
-      //update(newSight);
+      update(newSight);
     } else if (likesForCurrentUser.type === "negative") {
-      console.log("removing negative likes", likesForCurrentUser.type);
       await removeDislike(sight.id, user.id, likes.negative);
-      console.log("likedUsers before filter", likes.likedUsers)
       const likedUsers = likes.likedUsers.filter(
         (item) => item.userId !== user.id
       );
-      console.log("removed negative likes", likedUsers);
       const newLikes = { ...likes, negative: likes.negative - 1, likedUsers };
       const newSight = { ...sight, likes: newLikes };
-      //update(newSight);
+      update(newSight);
     }
   };
 
   const handleAddLike = async () => {
-    await addLike(sight.id, user.id);
+    await addLike(sight.id, user.id, likes.positive);
     const likedUsers = [
       ...likes.likedUsers,
       { userId: user.id, type: "positive" },
@@ -60,7 +54,7 @@ const LikeButtons = ({ sight, update }) => {
   };
 
   const handleAddDislike = async () => {
-    await addDislike(sight.id, user.id);
+    await addDislike(sight.id, user.id, likes.negative);
     const likedUsers = [
       ...likes.likedUsers,
       { userId: user.id, type: "negative" },
@@ -76,8 +70,27 @@ const LikeButtons = ({ sight, update }) => {
     if (hasUserLikedThis) {
       if (likesForCurrentUser.type === "negative") {
         console.log("current is negative");
-        removeLikes();
-        handleAddLike();
+        const response = await addLike(sight.id, user.id, likes.positive);
+        if (response) {
+          const likedUsers = [
+            ...likes.likedUsers,
+            { userId: user.id, type: "positive" },
+          ];
+          let negative = likes.negative;
+          if (negative > 0) negative = negative - 1;
+          const newLikes = {
+            ...likes,
+            positive: likes.positive + 1,
+            negative,
+            likedUsers,
+          };
+          const newSight = { ...sight, likes: newLikes };
+          update(newSight);
+        } else {
+          console.log("Error in firestore");
+        }
+        /*
+        handleAddLike();*/
       } else {
         removeLikes();
       }
@@ -92,8 +105,28 @@ const LikeButtons = ({ sight, update }) => {
     if (hasUserLikedThis) {
       if (likesForCurrentUser.type === "positive") {
         console.log("current is positive");
-        removeLikes();
-        handleAddDislike();
+        await addDislike(sight.id, user.id, likes.negative);
+        likesForCurrentUser.type = "negative";
+        
+        const likedUsers = likes.likedUsers.map((item) =>
+          item.id !== user.id ? item : likesForCurrentUser
+        );
+        /*
+        const likedUsers = [
+          ...likes.likedUsers,
+          { userId: user.id, type: "negative" },
+        ];*/
+        console.log(likedUsers);
+        let positive = likes.positive;
+        if (positive > 0) positive = positive - 1;
+        const newLikes = {
+          ...likes,
+          negative: likes.negative + 1,
+          positive,
+          likedUsers,
+        };
+        const newSight = { ...sight, likes: newLikes };
+        update(newSight);
       } else {
         removeLikes();
       }
