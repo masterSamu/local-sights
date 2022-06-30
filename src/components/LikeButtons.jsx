@@ -12,30 +12,39 @@ const LikeButtons = ({ sight, update }) => {
   const user = useSelector((state) => state.user);
   const { likes } = sight;
   console.log("likes", likes);
-  console.log("sight likes", sight.likes);
   const likesForCurrentUser = likes.likedUsers.find(
     (item) => item.userId === user?.id
   );
-  const userLiked = user?.id === likesForCurrentUser?.userId;
+  const hasUserLikedThis = user?.id === likesForCurrentUser?.userId;
 
+  console.log("user:", likesForCurrentUser);
+
+  // Ongelma on kun peukutus on poistettu, se päivittää reducerin,
+  // mutta päivitys ei tapahdu ennenkuin HandleAddDislike/-Like funktio päivittää
+  // saman reducrein.
   const removeLikes = async () => {
     if (likesForCurrentUser.type === "positive") {
+      console.log("removing positive likes", likesForCurrentUser.type);
       await removeLike(sight.id, user.id, likes.positive);
+      console.log("likedUsers before filter", likes.likedUsers)
       const likedUsers = likes.likedUsers.filter(
         (item) => item.userId !== user.id
       );
+      console.log("removed positive likes", likedUsers);
       const newLikes = { ...likes, positive: likes.positive - 1, likedUsers };
       const newSight = { ...sight, likes: newLikes };
-      update(newSight);
+      //update(newSight);
     } else if (likesForCurrentUser.type === "negative") {
+      console.log("removing negative likes", likesForCurrentUser.type);
       await removeDislike(sight.id, user.id, likes.negative);
+      console.log("likedUsers before filter", likes.likedUsers)
       const likedUsers = likes.likedUsers.filter(
         (item) => item.userId !== user.id
       );
-      console.log("remove", likedUsers);
+      console.log("removed negative likes", likedUsers);
       const newLikes = { ...likes, negative: likes.negative - 1, likedUsers };
       const newSight = { ...sight, likes: newLikes };
-      update(newSight);
+      //update(newSight);
     }
   };
 
@@ -63,25 +72,33 @@ const LikeButtons = ({ sight, update }) => {
 
   // Peukutus ei toimi vielä siten, että kun painaa posia niin negatiivinen lähtis.
   const handleLike = async () => {
-    if (userLiked) {
+    console.log("LIKE");
+    if (hasUserLikedThis) {
       if (likesForCurrentUser.type === "negative") {
+        console.log("current is negative");
         removeLikes();
         handleAddLike();
+      } else {
+        removeLikes();
       }
-      removeLikes();
     } else {
+      console.log("No likes in memory");
       handleAddLike();
     }
   };
 
   const handleDislike = async () => {
-    if (userLiked) {
+    console.log("DISLIKE");
+    if (hasUserLikedThis) {
       if (likesForCurrentUser.type === "positive") {
+        console.log("current is positive");
         removeLikes();
         handleAddDislike();
+      } else {
+        removeLikes();
       }
-      removeLikes();
     } else {
+      console.log("No likes in memory");
       handleAddDislike();
     }
   };

@@ -9,11 +9,9 @@ const sightSlice = createSlice({
     },
     setSightReducer(state, action) {
       const updatedSight = action.payload;
-      const asd = state.map((sight) =>
+      return state.map((sight) =>
         sight.id !== updatedSight.id ? sight : updatedSight
       );
-      console.log("reducer:", asd)
-      return asd;
     },
   },
 });
