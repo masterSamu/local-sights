@@ -2,10 +2,8 @@ import { Row, Col, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { BsHandThumbsUp, BsHandThumbsDown } from "react-icons/bs";
 import {
-  addLike,
-  removeLike,
-  addDislike,
-  removeDislike,
+  updateUsersInLikedUsers,
+  removeUserFromLikedUsers,
 } from "../services/sights";
 
 const LikeButtons = ({ sight, update }) => {
@@ -15,124 +13,114 @@ const LikeButtons = ({ sight, update }) => {
   const likesForCurrentUser = likes.likedUsers.find(
     (item) => item.userId === user?.id
   );
-  const hasUserLikedThis = user?.id === likesForCurrentUser?.userId;
 
-  console.log("user:", likesForCurrentUser);
+  console.log("user likes:", likesForCurrentUser);
 
-  // Ongelma on kun peukutus on poistettu, se päivittää reducerin,
-  // mutta päivitys ei tapahdu ennenkuin HandleAddDislike/-Like funktio päivittää
-  // saman reducrein.
-  const removeLikes = async () => {
-    if (likesForCurrentUser.type === "positive") {
-      await removeLike(sight.id, user.id, likes.positive);
-      const likedUsers = likes.likedUsers.filter(
-        (item) => item.userId !== user.id
-      );
-      const newLikes = { ...likes, positive: likes.positive - 1, likedUsers };
-      const newSight = { ...sight, likes: newLikes };
-      update(newSight);
-    } else if (likesForCurrentUser.type === "negative") {
-      await removeDislike(sight.id, user.id, likes.negative);
-      const likedUsers = likes.likedUsers.filter(
-        (item) => item.userId !== user.id
-      );
-      const newLikes = { ...likes, negative: likes.negative - 1, likedUsers };
-      const newSight = { ...sight, likes: newLikes };
-      update(newSight);
-    }
-  };
-
-  const handleAddLike = async () => {
-    await addLike(sight.id, user.id, likes.positive);
-    const likedUsers = [
-      ...likes.likedUsers,
-      { userId: user.id, type: "positive" },
-    ];
-    const newLikes = { ...likes, positive: likes.positive + 1, likedUsers };
-    const newSight = { ...sight, likes: newLikes };
-    update(newSight);
-  };
-
-  const handleAddDislike = async () => {
-    await addDislike(sight.id, user.id, likes.negative);
-    const likedUsers = [
-      ...likes.likedUsers,
-      { userId: user.id, type: "negative" },
-    ];
-    const newLikes = { ...likes, negative: likes.negative + 1, likedUsers };
-    const newSight = { ...sight, likes: newLikes };
-    update(newSight);
-  };
-
-  // Peukutus ei toimi vielä siten, että kun painaa posia niin negatiivinen lähtis.
   const handleLike = async () => {
-    console.log("LIKE");
-    if (hasUserLikedThis) {
+    const likedUser = { userId: user.id, type: "positive" };
+    if (likesForCurrentUser) {
       if (likesForCurrentUser.type === "negative") {
-        console.log("current is negative");
-        const response = await addLike(sight.id, user.id, likes.positive);
-        if (response) {
-          const likedUsers = [
-            ...likes.likedUsers,
-            { userId: user.id, type: "positive" },
-          ];
-          let negative = likes.negative;
-          if (negative > 0) negative = negative - 1;
+        const isDeleted = await removeUserFromLikedUsers(sight.id, {
+          ...likedUser,
+          type: "negative",
+        });
+        if (isDeleted) {
+          const isUserUpdated = await updateUsersInLikedUsers(
+            sight.id,
+            likedUser
+          );
+          if (isUserUpdated) {
+            const likedUsers = likes.likedUsers.map((item) =>
+              item.userId !== user.id ? item : likedUser
+            );
+            const newLikes = {
+              ...likes,
+              likedUsers,
+            };
+            update({ ...sight, likes: newLikes });
+          }
+        }
+      } else {
+        const isUserDeleted = await removeUserFromLikedUsers(
+          sight.id,
+          likedUser
+        );
+        if (isUserDeleted) {
+          const likedUsers = likes.likedUsers.filter(
+            (item) => item.userId !== user.id
+          );
+
           const newLikes = {
             ...likes,
-            positive: likes.positive + 1,
-            negative,
             likedUsers,
           };
-          const newSight = { ...sight, likes: newLikes };
-          update(newSight);
-        } else {
-          console.log("Error in firestore");
+          update({ ...sight, likes: newLikes });
         }
-        /*
-        handleAddLike();*/
-      } else {
-        removeLikes();
       }
     } else {
-      console.log("No likes in memory");
-      handleAddLike();
+      const isUserUpdated = await updateUsersInLikedUsers(sight.id, likedUser);
+      if (isUserUpdated) {
+        const likedUsers = [...likes.likedUsers, likedUser];
+        const newLikes = {
+          ...likes,
+          likedUsers,
+        };
+        update({ ...sight, likes: newLikes });
+      }
     }
   };
 
   const handleDislike = async () => {
-    console.log("DISLIKE");
-    if (hasUserLikedThis) {
+    const likedUser = { userId: user.id, type: "negative" };
+    if (likesForCurrentUser) {
       if (likesForCurrentUser.type === "positive") {
-        console.log("current is positive");
-        await addDislike(sight.id, user.id, likes.negative);
-        likesForCurrentUser.type = "negative";
-        
-        const likedUsers = likes.likedUsers.map((item) =>
-          item.id !== user.id ? item : likesForCurrentUser
-        );
-        /*
-        const likedUsers = [
-          ...likes.likedUsers,
-          { userId: user.id, type: "negative" },
-        ];*/
-        console.log(likedUsers);
-        let positive = likes.positive;
-        if (positive > 0) positive = positive - 1;
-        const newLikes = {
-          ...likes,
-          negative: likes.negative + 1,
-          positive,
-          likedUsers,
-        };
-        const newSight = { ...sight, likes: newLikes };
-        update(newSight);
+        const isDeleted = await removeUserFromLikedUsers(sight.id, {
+          ...likedUser,
+          type: "positive",
+        });
+        if (isDeleted) {
+          const isUserUpdated = await updateUsersInLikedUsers(
+            sight.id,
+            likedUser
+          );
+          if (isUserUpdated) {
+            const likedUsers = likes.likedUsers.map((item) =>
+              item.userId !== user.id ? item : likedUser
+            );
+            const newLikes = {
+              ...likes,
+              likedUsers,
+            };
+            update({ ...sight, likes: newLikes });
+          }
+        }
       } else {
-        removeLikes();
+        const isUserDeleted = await removeUserFromLikedUsers(
+          sight.id,
+          likedUser
+        );
+        if (isUserDeleted) {
+          const likedUsers = likes.likedUsers.filter(
+            (item) => item.userId !== user.id
+          );
+
+          const newLikes = {
+            ...likes,
+            likedUsers,
+          };
+          update({ ...sight, likes: newLikes });
+        }
       }
     } else {
-      console.log("No likes in memory");
-      handleAddDislike();
+      const isUserUpdated = await updateUsersInLikedUsers(sight.id, likedUser);
+      if (isUserUpdated) {
+        const likedUsers = [...likes.likedUsers, likedUser];
+        const newLikes = {
+          ...likes,
+          likedUsers,
+        };
+        update({ ...sight, likes: newLikes });
+      }
     }
   };
 
@@ -159,6 +147,7 @@ const LikeButtons = ({ sight, update }) => {
           </Button>
           {likes.negative}
         </Col>
+        type: {likesForCurrentUser?.type}
       </Row>
     );
   }
