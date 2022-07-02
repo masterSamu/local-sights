@@ -1,8 +1,8 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import "../styles/SightCard.css";
+import "../../styles/SightCard.css";
 
-import { setSightReducer } from "../reducers/sightReducer";
+import { setSightReducer } from "../../reducers/sightReducer";
 import LikeButtons from "./LikeButtons";
 
 const SightCard = ({ sight }) => {

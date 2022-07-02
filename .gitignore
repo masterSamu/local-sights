@@ -30,5 +30,6 @@ firebase.*
 firestore.*
 storage.rules
 firestore-debug.log
-
+firebase-export*
 emulator-data
+ui-debug.log

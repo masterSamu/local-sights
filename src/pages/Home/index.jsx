@@ -1,6 +1,6 @@
 import { Container, CardGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import SightCard from "../../components/SightCard";
+import SightCard from "../../components/SightCard/SightCard";
 
 const Home = () => {
   const user = useSelector((state) => state.user);
