@@ -56,7 +56,6 @@ function App() {
     }
   };
 
-  console.log("main", user);
 
   return (
     <Container>

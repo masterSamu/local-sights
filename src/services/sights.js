@@ -6,6 +6,7 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  addDoc,
 } from "firebase/firestore";
 
 const sightsRef = collection(db, "sights");
@@ -21,9 +22,21 @@ const getAll = async () => {
   return data;
 };
 
+export const addSight = async (sight) => {
+  try {
+    const docRef = await addDoc(collection(db, "sights"), sight);
+    if (docRef.id) {
+      return docRef.id;
+    }
+  } catch (error) {
+    console.log(error.message);
+    return false;
+  }
+};
+
 /** Can be used for add or update */
 export const updateUsersInLikedUsers = async (docId, likedUserObject) => {
-  console.log("func: ", likedUserObject)
+  console.log("func: ", likedUserObject);
   try {
     const docRef = doc(db, "sights", docId);
     await updateDoc(docRef, {
@@ -40,7 +53,7 @@ export const removeUserFromLikedUsers = async (docId, likedUserObject) => {
     const docRef = doc(db, "sights", docId);
     await updateDoc(docRef, {
       "likes.likedUsers": arrayRemove(likedUserObject),
-    })
+    });
     return true;
   } catch (error) {
     return false;

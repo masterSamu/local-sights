@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { Form, Image } from "react-bootstrap";
 
-const CapturePhoto = ({setPhoto}) => {
+const CapturePhoto = ({ setPhoto }) => {
   const [source, setSource] = useState("");
 
   const handleCapture = async (target) => {
     if (target.files) {
       if (target.files.length !== 0) {
         const file = target.files[0];
-        console.log("size: ", file.size /1024 /1024)
         const sizeInMb = file.size / 1024 / 1024;
-        if (sizeInMb > 10) {
-            alert("File size excees 10 mb");
+        if (sizeInMb > 5) {
+          alert("File size excees 5 mb");
         } else {
-            //const resized = await resizeFile(file);
-            const newUrl = URL.createObjectURL(file);
-            setSource(newUrl);
-            setPhoto(file);
+          //const resized = await resizeFile(file);
+          const newUrl = URL.createObjectURL(file);
+          setSource(newUrl);
+          setPhoto(file);
         }
       }
     }

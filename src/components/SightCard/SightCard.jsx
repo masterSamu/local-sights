@@ -2,7 +2,7 @@ import { Card, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/SightCard.css";
 
-import { setSightReducer } from "../../reducers/sightReducer";
+import { setSight } from "../../reducers/sightReducer";
 import LikeButtons from "./LikeButtons";
 
 const SightCard = ({ sight }) => {
@@ -10,7 +10,7 @@ const SightCard = ({ sight }) => {
   const dispatch = useDispatch();
 
   const handleUpdate = (newSight) => {
-    dispatch(setSightReducer(newSight));
+    dispatch(setSight(newSight));
   };
 
   return (

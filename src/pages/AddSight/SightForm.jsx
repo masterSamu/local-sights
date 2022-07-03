@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import CapturePhoto from "../../components/CapturePhoto";
 import {
   getStorage,
@@ -7,16 +7,25 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addSight } from "../../services/sights";
+import Coords from "../../components/Coords";
+import { createSight } from "../../reducers/sightReducer";
+import { useNavigate } from "react-router-dom";
 
 const SightForm = () => {
   const user = useSelector((state) => state.user);
   const [validated, setValidated] = useState(false);
   const [photo, setPhoto] = useState(null);
+  const [coords, setCoords] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const uploadFile = (fileName) => {
+  const uploadData = async (formData) => {
+    const userId = user.id;
+    const name = formData.name.value;
     const storage = getStorage();
-    const sightsRef = ref(storage, `images/sights/${user.id}/${fileName}`);
+    const sightsRef = ref(storage, `images/sights/${userId}/${name}`);
 
     const uploadTask = uploadBytesResumable(sightsRef, photo);
     uploadTask.on(
@@ -25,37 +34,43 @@ const SightForm = () => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-          default:
-            break;
-        }
       },
       (error) => {
-        // Handle unsuccessful uploads
         console.log(error);
       },
       () => {
-        // Handle successful uploads on complete
-        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
+          const description = formData.description.value;
+          const likes = { positive: 0, negative: 0, likedUsers: [] };
+          const sight = {
+            name,
+            description,
+            userId,
+            coords,
+            imageUrl: downloadURL,
+            likes,
+            comments: [],
+          };
+          addSight(sight).then((id) => {
+            if (id) {
+              sight.id = id;
+              dispatch(createSight(sight));
+              navigate("/");
+              setPhoto(null);
+              setCoords(null);
+            }
+          });
         });
       }
     );
   };
 
   const handleSubmit = (e) => {
-    const form = e.currentTarget;
     e.preventDefault();
+    const form = e.currentTarget;
     if (form.checkValidity() === false) {
     } else {
-      uploadFile(e.target.name.value);
+      uploadData(e.target);
     }
     setValidated(true);
   };
@@ -91,8 +106,15 @@ const SightForm = () => {
       </Form.Group>
 
       <CapturePhoto setPhoto={setPhoto} />
+      <Coords setCoords={setCoords} coords={coords} />
 
-      <Button type="submit">Save</Button>
+      <Row>
+        <Col>
+          <Button variant="success" type="submit">
+            Save
+          </Button>
+        </Col>
+      </Row>
     </Form>
   );
 };
