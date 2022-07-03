@@ -21,46 +21,6 @@ const getAll = async () => {
   return data;
 };
 
-export const updatePositiveLike = async (docId, likes) => {
-  const docRef = doc(db, "sights", docId);
-  await updateDoc(docRef, {
-    "likes.positive": likes,
-  });
-};
-
-export const updateNegativeLike = async (docId, negativeLikes) => {
-  const docRef = doc(db, "sights", docId);
-  await updateDoc(docRef, {
-    "likes.negative": negativeLikes,
-  });
-};
-
-export const removePositiveLike = async (docId, positiveLikes) => {
-  if (positiveLikes < 1) return false;
-  try {
-    const docRef = doc(db, "sights", docId);
-    await updateDoc(docRef, {
-      "likes.positive": positiveLikes,
-    });
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
-export const removeNegativeLike = async (docId, likes) => {
-  if (likes < 1) return false;
-  try {
-    const docRef = doc(db, "sights", docId);
-    await updateDoc(docRef, {
-      "likes.negative": likes,
-    });
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
 /** Can be used for add or update */
 export const updateUsersInLikedUsers = async (docId, likedUserObject) => {
   console.log("func: ", likedUserObject)
@@ -71,7 +31,6 @@ export const updateUsersInLikedUsers = async (docId, likedUserObject) => {
     });
     return true;
   } catch (error) {
-    console.log(error.message)
     return false;
   }
 };

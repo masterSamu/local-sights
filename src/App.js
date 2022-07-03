@@ -8,6 +8,7 @@ import { Container } from "react-bootstrap";
 import "./styles/App.css";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import AddSight from "./pages/AddSight";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { setUser } from "./reducers/userReducer";
 
@@ -63,6 +64,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/add" element={<AddSight />} />
       </Routes>
     </Container>
   );
