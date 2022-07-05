@@ -1,6 +1,6 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
-import ReactMapboxGl, { Layer, Feature, Marker } from "react-mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
+import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+
 
 const Coords = ({ coords, setCoords }) => {
   const Map = ReactMapboxGl({
@@ -33,7 +33,7 @@ const Coords = ({ coords, setCoords }) => {
           </Row>
           <Row>
             <Map
-              style="mapbox://styles/mapbox/satellite-v9"
+              style={"mapbox://styles/mapbox/satellite-streets-v11"}
               containerStyle={{
                 height: "50vh",
                 width: "100vw",
@@ -44,14 +44,10 @@ const Coords = ({ coords, setCoords }) => {
               <Layer
                 type="symbol"
                 id="marker"
-              
+                layout={{"icon-image":"symbols-marker"}}
               >
                 <Feature coordinates={[coords.longitude, coords.latitude]} />
               </Layer>
-              <Marker
-                coordinater={[coords.longitude, coords.latitude]}
-                anchor="bottom"
-              ></Marker>
             </Map>
           </Row>
         </>
