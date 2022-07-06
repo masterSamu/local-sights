@@ -115,7 +115,7 @@ const SightForm = () => {
           type="text"
           name="coordinates"
           onKeyDown={(e) => e.preventDefault()}
-          value={coords ? `${coords?.longitude} , ${coords?.latitude}` : null}
+          value={coords ? `${coords?.longitude} , ${coords?.latitude}` : ""}
         />
         <Form.Control.Feedback>Looks good</Form.Control.Feedback>
         <Form.Control.Feedback type="invalid">
