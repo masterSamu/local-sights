@@ -76,7 +76,12 @@ const SightForm = () => {
   };
 
   return (
-    <Form noValidate validated={validated} onSubmit={handleSubmit} id="sight-form">
+    <Form
+      noValidate
+      validated={validated}
+      onSubmit={handleSubmit}
+      id="sight-form"
+    >
       <Form.Group controlId="validationName">
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -114,8 +119,9 @@ const SightForm = () => {
           required
           type="text"
           name="coordinates"
+          onChange={(e) => e.preventDefault()}
           onKeyDown={(e) => e.preventDefault()}
-          value={coords ? `${coords?.longitude} , ${coords?.latitude}` : ""}
+          value={coords ? `long: ${coords?.longitude} , lat: ${coords?.latitude}` : ""}
         />
         <Form.Control.Feedback>Looks good</Form.Control.Feedback>
         <Form.Control.Feedback type="invalid">
