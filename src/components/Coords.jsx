@@ -1,6 +1,5 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
-
+import { Button, Container, Row } from "react-bootstrap";
+import ReactMapboxGl, { Layer, Feature, ZoomControl } from "react-mapbox-gl";
 
 const Coords = ({ coords, setCoords }) => {
   const Map = ReactMapboxGl({
@@ -28,23 +27,20 @@ const Coords = ({ coords, setCoords }) => {
       {coords && (
         <>
           <Row>
-            <Col>lat: {coords.latitude}</Col>
-            <Col>long: {coords.longitude}</Col>
-          </Row>
-          <Row>
             <Map
-              style={"mapbox://styles/mapbox/satellite-streets-v11"}
+              style={"mapbox://styles/samu-mapbox/cl59hxi60000u15pjrocn109d"}
               containerStyle={{
                 height: "50vh",
                 width: "100vw",
               }}
               center={[coords.longitude, coords.latitude]}
-              zoom={[10]}
+              zoom={[12]}
             >
+              <ZoomControl />
               <Layer
                 type="symbol"
                 id="marker"
-                layout={{"icon-image":"symbols-marker"}}
+                layout={{ "icon-image": "mapbox-marker-icon-blue" }}
               >
                 <Feature coordinates={[coords.longitude, coords.latitude]} />
               </Layer>

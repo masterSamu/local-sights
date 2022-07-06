@@ -68,15 +68,15 @@ const SightForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-    } else {
+    if (form.checkValidity() && coords && photo) {
       uploadData(e.target);
+    } else {
     }
     setValidated(true);
   };
 
   return (
-    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+    <Form noValidate validated={validated} onSubmit={handleSubmit} id="sight-form">
       <Form.Group controlId="validationName">
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -107,6 +107,21 @@ const SightForm = () => {
 
       <CapturePhoto setPhoto={setPhoto} />
       <Coords setCoords={setCoords} coords={coords} />
+
+      <Form.Group controlId="validationCoordinates">
+        <Form.Label>Coordinates</Form.Label>
+        <Form.Control
+          required
+          type="text"
+          name="coordinates"
+          onKeyDown={(e) => e.preventDefault()}
+          value={coords ? `${coords?.longitude} , ${coords?.latitude}` : null}
+        />
+        <Form.Control.Feedback>Looks good</Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">
+          Coordinates is required
+        </Form.Control.Feedback>
+      </Form.Group>
 
       <Row>
         <Col>
