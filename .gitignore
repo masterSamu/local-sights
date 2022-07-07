@@ -23,10 +23,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+*.log
+
 .firebase*
 firebase.*
 firestore.*
 storage.rules
 firestore-debug.log
-
+firebase-export*
 emulator-data
+ui-debug.log

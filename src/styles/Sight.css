@@ -1,0 +1,9 @@
+
+.container .like-container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.like-container .col {
+    text-align: center;
+}

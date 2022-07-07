@@ -1,0 +1,15 @@
+
+Form {
+    width: 100%;
+}
+
+.photo-container, .coords-container {
+    padding: 10px 0px;
+}
+
+#photo-preview {
+    max-width: 100%;
+    max-height: 60vh;
+}
+
+

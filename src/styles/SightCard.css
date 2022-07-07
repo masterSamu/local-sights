@@ -1,0 +1,36 @@
+.sight-card {
+    width: 20rem !important;
+    padding: 0 !important;
+}
+
+.sight-card img {
+    object-fit: cover;
+}
+
+.sight-card .like-container .col {
+    justify-content: center;
+}
+
+.thumb-icon {
+    height: 35px;
+    width: 35px;
+    padding: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: inherit;
+    border-radius: 360px;
+    cursor: pointer;
+}
+
+.thumb-icon-up {
+    color: green;
+}
+
+.thumb-icon-down {
+    color: red;
+}
+
+.thumb-icon-active {
+    border-color: dodgerblue;
+    border-width: 3px;
+}
