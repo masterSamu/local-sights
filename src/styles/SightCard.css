@@ -1,5 +1,6 @@
 .sight-card {
-    max-width: 300px;
+    width: 20rem !important;
+    padding: 0 !important;
 }
 
 .sight-card img {

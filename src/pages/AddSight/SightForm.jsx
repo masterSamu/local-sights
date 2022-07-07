@@ -92,7 +92,7 @@ const SightForm = () => {
         />
         <Form.Control.Feedback>Looks good</Form.Control.Feedback>
         <Form.Control.Feedback type="invalid">
-          Name of the place is required
+          Name is required
         </Form.Control.Feedback>
       </Form.Group>
 

@@ -1,4 +1,4 @@
-import { Container, CardGroup } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import SightCard from "../../components/SightCard/SightCard";
 
@@ -8,13 +8,13 @@ const Home = () => {
   return (
     <Container>
       {user && <h3>{user?.username} logged in</h3>}
-      <CardGroup>
+      <Row xs={1} md={4} className="g-4 card-container">
         {sights.map((sight) => {
           return (
             <SightCard key={sight.id} sight={sight} />
           );
         })}
-      </CardGroup>
+      </Row>
     </Container>
   );
 };

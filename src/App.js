@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import AddSight from "./pages/AddSight";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { setUser } from "./reducers/userReducer";
+import Sight from "./pages/Sight";
 
 function App() {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/add" element={<AddSight />} />
+        <Route path="/sight/:id" element={<Sight />} />
       </Routes>
     </Container>
   );

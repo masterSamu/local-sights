@@ -1,7 +1,7 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/SightCard.css";
-
+import { Link } from "react-router-dom";
 import { setSight } from "../../reducers/sightReducer";
 import LikeButtons from "./LikeButtons";
 
@@ -22,7 +22,9 @@ const SightCard = ({ sight }) => {
         <Card.Text>{sight.description}</Card.Text>
         <Row>
           <Col xs={6}>
-            <Button>More...</Button>
+            <Link to={`/sight/${sight.id}`}>
+              <Button variant="primary">More...</Button>
+            </Link>
           </Col>
           <Col xs={6}>
             {user && <LikeButtons sight={sight} update={handleUpdate} />}
