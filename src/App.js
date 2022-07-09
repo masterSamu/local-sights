@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import sightService from "./services/sights";
 import userService, { extractUserProperties } from "./services/user";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import { initializeSights } from "./reducers/sightReducer";
-import { Container } from "react-bootstrap";
 import "./styles/App.css";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -12,10 +11,11 @@ import AddSight from "./pages/AddSight";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { setUser } from "./reducers/userReducer";
 import Sight from "./pages/Sight";
+import Navigationbar from "./components/Navbar/Navigationbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,17 +57,24 @@ function App() {
     }
   };
 
-
   return (
-    <Container>
-      {user && <button onClick={logOut}>Log out</button>}
+    <>
+      <Navigationbar logOut={logOut} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/add" element={<AddSight />} />
+
+        <Route
+          path="/sight/add"
+          element={
+            <ProtectedRoute>
+              <AddSight />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/sight/:id" element={<Sight />} />
       </Routes>
-    </Container>
+    </>
   );
 }
 
