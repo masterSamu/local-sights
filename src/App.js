@@ -11,7 +11,7 @@ import AddSight from "./pages/AddSight";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { setUser } from "./reducers/userReducer";
 import Sight from "./pages/Sight";
-import Navigationbar from "./components/Navigationbar";
+import Navigationbar from "./components/Navbar/Navigationbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -60,20 +60,20 @@ function App() {
   return (
     <>
       <Navigationbar logOut={logOut} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
 
-          <Route
-            path="/add"
-            element={
-              <ProtectedRoute>
-                <AddSight />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/sight/:id" element={<Sight />} />
-        </Routes>
+        <Route
+          path="/sight/add"
+          element={
+            <ProtectedRoute>
+              <AddSight />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/sight/:id" element={<Sight />} />
+      </Routes>
     </>
   );
 }
