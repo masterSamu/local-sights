@@ -13,6 +13,7 @@ import { setUser } from "./reducers/userReducer";
 import Sight from "./pages/Sight";
 import Navigationbar from "./components/Navbar/Navigationbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CreateAccount from "./pages/CreateAccount";
 
 function App() {
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-
+        <Route path="/register" element={<CreateAccount />} />
         <Route
           path="/sight/add"
           element={

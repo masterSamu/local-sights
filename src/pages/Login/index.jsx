@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../reducers/userReducer";
 import { Form, Button, Container } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import userService from "../../services/user";
 
 const Login = () => {
@@ -51,6 +51,7 @@ const Login = () => {
           Login
         </Button>
       </Form>
+      <Link to="/register">Don't have an account yet?</Link>
     </Container>
   );
 };
