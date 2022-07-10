@@ -6,7 +6,7 @@ import {
   sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
-import { doc, query, where, getDocs, collection, limit } from "firebase/firestore";
+import { query, where, getDocs, collection, limit } from "firebase/firestore";
 import { db } from "../firebase-config";
 
 const auth = getAuth();
@@ -35,6 +35,10 @@ const logOut = async () => {
     });
 };
 
+/** Extract custom user object from firebase user object
+ *
+ * @typedef {object} user
+ */
 export const extractUserProperties = (userObject) => {
   if (userObject) {
     return {
@@ -51,26 +55,27 @@ export const createUser = async (email, password, username) => {
   try {
     const create = await createUserWithEmailAndPassword(auth, email, password);
     if (create) {
-      const profile = await updateProfile(auth.currentUser, {
+      // Set username to profile
+      await updateProfile(auth.currentUser, {
         displayName: username,
       });
-      console.log("profile", profile);
-      if (profile) {
-        return extractUserProperties(create.user);
-      }
+      return extractUserProperties(auth.currentUser);
     }
   } catch (error) {
     if (error.message === "Firebase: Error (auth/email-already-in-use).") {
       return { error: `${email} already has registered account.` };
     }
   }
-  return null;
 };
 
-export const sendVerificationEmail = () => {
-  sendEmailVerification(auth.currentUser).then(() => {
+export const sendVerificationEmail = async () => {
+  try {
+    await sendEmailVerification(auth.currentUser);
     return true;
-  });
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 };
 
 export const checkUsernameAvailability = async (username) => {

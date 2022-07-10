@@ -1,31 +1,33 @@
 import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setUser } from "../../reducers/userReducer";
 import { createUser, sendVerificationEmail } from "../../services/user";
 import EmailField from "./EmailField";
-import PasswordFields from "./PasswordFIelds";
+import PasswordFields from "./PasswordFields";
 import UsernameField from "./UsernameField";
 
 const CreateAccount = () => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [username, setUsername] = useState(null);
-  const [isVerificationSent, setVerificationSent] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password && email) {
+    if (password && email && username) {
       const user = await createUser(email, password, username);
-      console.log(user);
       if (user?.email === email) {
-        const isEmailSent = sendVerificationEmail();
+        dispatch(setUser(user));
+        const isEmailSent = await sendVerificationEmail();
         if (isEmailSent) {
-          setVerificationSent(true);
-          //navigate("/register/profile");
+          navigate("/");
+          /** @todo: Notification that email has been sent to user */
         }
       } else if (user?.error) {
-        // Notification message here from user.error
+        /**@todo: Notification message here from user.error*/
       }
     }
   };
@@ -40,7 +42,6 @@ const CreateAccount = () => {
           Create account
         </Button>
       </Form>
-      {isVerificationSent && <p>Verification link sent to email</p>}
     </Container>
   );
 };
