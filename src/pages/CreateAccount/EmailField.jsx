@@ -1,12 +1,31 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 
 const EmailField = ({ setEmail }) => {
   const [input, setInput] = useState("");
+  const [isChanged, setChanged] = useState(false);
+  const [isValid, setValid] = useState(false);
+
+  useEffect(() => {
+    if (isValid) {
+      setEmail(input);
+    }
+  }, [setEmail, input, isValid]);
+
+  const handleChange = (value) => {
+    setChanged(true);
+    setInput(value);
+  };
+
   const validateEmail = () => {
     const length = input.length > 10;
-    if (length) {
-      setEmail(input);
+    const re = /\S+@\S+\.\S+/;
+    const isEmail = re.test(input);
+    if (length && isEmail) {
+      setValid(true);
+    } else {
+      setValid(false);
     }
   };
 
@@ -19,13 +38,19 @@ const EmailField = ({ setEmail }) => {
           placeholder="Enter email"
           name="email"
           required
-          isInvalid={input.length < 10}
-          onChange={(e) => setInput(e.target.value)}
-          onBlur={(e) => validateEmail()}
+          isInvalid={isChanged && input.length < 10 && !isValid}
+          isValid={isChanged && isValid}
+          onChange={({ target }) => handleChange(target.value)}
+          onBlur={validateEmail}
         />
-        <Form.Control.Feedback type="invalid">
-          Please write email
-        </Form.Control.Feedback>
+        {isChanged && !isValid && (
+          <Form.Control.Feedback type="invalid">
+            Invalid email
+          </Form.Control.Feedback>
+        )}
+        {isChanged && isValid && (
+          <Form.Control.Feedback>Looks good</Form.Control.Feedback>
+        )}
       </Form.Group>
     </>
   );

@@ -45,6 +45,7 @@ const UsernameField = ({ setUsername }) => {
         onBlur={validateUsername}
         required
         isInvalid={isChanged && (!isAvailable || !isValid)}
+        isValid={isChanged && (isAvailable || isValid)}
       />
 
       {!isAvailable && (
