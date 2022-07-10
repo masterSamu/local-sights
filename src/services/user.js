@@ -4,8 +4,10 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
-  updateProfile, 
+  updateProfile,
 } from "firebase/auth";
+import { doc, query, where, getDocs, collection, limit } from "firebase/firestore";
+import { db } from "../firebase-config";
 
 const auth = getAuth();
 
@@ -50,12 +52,11 @@ export const createUser = async (email, password, username) => {
     const create = await createUserWithEmailAndPassword(auth, email, password);
     if (create) {
       const profile = await updateProfile(auth.currentUser, {
-        displayName: username
-      })
-      console.log("profile", profile)
+        displayName: username,
+      });
+      console.log("profile", profile);
       if (profile) {
         return extractUserProperties(create.user);
-
       }
     }
   } catch (error) {
@@ -72,26 +73,25 @@ export const sendVerificationEmail = () => {
   });
 };
 
-export const getAllUsers = (username) => {
-  console.log("get users:")
-  auth.getUsers([
-    { displayName: username },
-  ])
-  .then((getUsersResult) => {
-    console.log('Successfully fetched user data:');
-    getUsersResult.users.forEach((userRecord) => {
-      console.log(userRecord);
+export const checkUsernameAvailability = async (username) => {
+  try {
+    let isAvailable = true;
+    const docRef = collection(db, "users");
+    const q = query(docRef, where("username", "==", username), limit(1));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      if (doc.exists() && doc.data().username === username) {
+        isAvailable = false;
+      } else {
+        isAvailable = true;
+      }
     });
-
-    console.log('Unable to find users corresponding to these identifiers:');
-    getUsersResult.notFound.forEach((userIdentifier) => {
-      console.log(userIdentifier);
-    });
-  })
-  .catch((error) => {
-    console.log('Error fetching user data:', error);
-  });
-}
+    return isAvailable;
+  } catch (error) {
+    console.log(error);
+    return error.message;
+  }
+};
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { login, logOut };

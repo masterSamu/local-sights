@@ -12,6 +12,7 @@ const CreateAccount = () => {
   const [username, setUsername] = useState(null);
   const [isVerificationSent, setVerificationSent] = useState(false);
   const navigate = useNavigate();
+  console.log("username:", username)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
