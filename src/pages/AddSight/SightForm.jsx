@@ -12,6 +12,7 @@ import { addSight } from "../../services/sights";
 import Coords from "../../components/Coords";
 import { createSight } from "../../reducers/sightReducer";
 import { useNavigate } from "react-router-dom";
+import { createNotification } from "../../reducers/notificationReducer";
 
 const SightForm = () => {
   const user = useSelector((state) => state.user);
@@ -56,6 +57,8 @@ const SightForm = () => {
               sight.id = id;
               dispatch(createSight(sight));
               navigate("/");
+              const message = `New sight "${sight.name}" has been added`;
+              dispatch(createNotification({ message, type: "success" }));
               setPhoto(null);
               setCoords(null);
             }
@@ -121,7 +124,11 @@ const SightForm = () => {
           name="coordinates"
           onChange={(e) => e.preventDefault()}
           onKeyDown={(e) => e.preventDefault()}
-          value={coords ? `long: ${coords?.longitude} , lat: ${coords?.latitude}` : ""}
+          value={
+            coords
+              ? `long: ${coords?.longitude} , lat: ${coords?.latitude}`
+              : ""
+          }
         />
         <Form.Control.Feedback>Looks good</Form.Control.Feedback>
         <Form.Control.Feedback type="invalid">

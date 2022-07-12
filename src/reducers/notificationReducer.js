@@ -36,12 +36,12 @@ export const setNotifications = (notifications) => {
 /**
  * Add notification to notifications state array
  * @param {object} notification
- * @param {string} notification.id
  * @param {string} notification.message
  * @param {"error" | "success" | "info" | "warning"} notification.type
  */
 export const createNotification = (notification) => {
   return (dispatch) => {
+    notification.id = new Date().getTime().toString();
     dispatch(appendNotification(notification));
   };
 };
