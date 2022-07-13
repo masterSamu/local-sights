@@ -9,8 +9,6 @@ const Notification = ({ notification }) => {
     dispatch(deleteNotification(notification.id));
   };
 
-  console.log(notification)
-
   return (
     <Alert
       key={notification.id}
