@@ -1,0 +1,47 @@
+import { useState } from "react";
+import { Alert } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { deleteNotification } from "../../reducers/notificationReducer";
+
+const Notification = ({ notification }) => {
+  const dispatch = useDispatch();
+  const [show, setShow] = useState(true);
+
+  const handleClose = () => {
+    setShow(false);
+    dispatch(deleteNotification(notification.id));
+  };
+
+  if (show) {
+    return (
+      <Alert
+        variant={getVariant(notification.type)}
+        onClose={handleClose}
+        dismissible
+      >
+        <p>{notification.message}</p>
+      </Alert>
+    );
+  }
+};
+
+/**
+ * Convert type of notification to wanted variant for Bootstrap styling.
+ * @param {"success" | "error" | "warning" | "info"} type string
+ */
+const getVariant = (type) => {
+  switch (type) {
+    case "success":
+      return "success";
+    case "error":
+      return "danger";
+    case "warning":
+      return "warning";
+    case "info":
+      return "info";
+    default:
+      return "primary";
+  }
+};
+
+export default Notification;

@@ -14,6 +14,7 @@ import Sight from "./pages/Sight";
 import Navigationbar from "./components/Navbar/Navigationbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreateAccount from "./pages/CreateAccount";
+import Notifications from "./components/Notification";
 
 function App() {
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ function App() {
   return (
     <>
       <Navigationbar logOut={logOut} />
+      <Notifications />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

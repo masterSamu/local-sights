@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { createNotification } from "../../reducers/notificationReducer";
 import { setUser } from "../../reducers/userReducer";
 import { createUser, sendVerificationEmail } from "../../services/user";
 import EmailField from "./EmailField";
@@ -24,10 +25,12 @@ const CreateAccount = () => {
         const isEmailSent = await sendVerificationEmail();
         if (isEmailSent) {
           navigate("/");
-          /** @todo: Notification that email has been sent to user */
+          const message = `Verification email has been sent to ${email}`;
+          dispatch(createNotification({ message, type: "success" }));
         }
       } else if (user?.error) {
-        /**@todo: Notification message here from user.error*/
+        const message = user.error;
+        dispatch(createNotification({ message, type: "error" }));
       }
     }
   };
