@@ -1,24 +1,28 @@
+import { useState } from "react";
 import { Alert } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { deleteNotification } from "../../reducers/notificationReducer";
 
 const Notification = ({ notification }) => {
   const dispatch = useDispatch();
+  const [show, setShow] = useState(true);
 
   const handleClose = () => {
+    setShow(false);
     dispatch(deleteNotification(notification.id));
   };
 
-  return (
-    <Alert
-      key={notification.id}
-      variant={getVariant(notification.type)}
-      onClose={handleClose}
-      dismissible
-    >
-      <p>{notification.message}</p>
-    </Alert>
-  );
+  if (show) {
+    return (
+      <Alert
+        variant={getVariant(notification.type)}
+        onClose={handleClose}
+        dismissible
+      >
+        <p>{notification.message}</p>
+      </Alert>
+    );
+  }
 };
 
 /**
