@@ -6,7 +6,7 @@ import {
   sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
-import { query, where, getDocs, collection, limit } from "firebase/firestore";
+import { query, where, getDocs, collection, limit, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
 
 const auth = getAuth();
@@ -97,6 +97,21 @@ export const checkUsernameAvailability = async (username) => {
     return error.message;
   }
 };
+
+export const getUserInfo = async (userId) => {
+  try {
+
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log(docSnap.data())
+      return docSnap.data();
+    }
+  } catch(error) {
+    console.log(error.message);
+    return null;
+  }
+}
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { login, logOut };

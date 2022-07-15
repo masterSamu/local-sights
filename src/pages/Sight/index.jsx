@@ -12,6 +12,7 @@ import MapboxMap from "../../components/MapboxMap";
 import LikeButtons from "../../components/SightCard/LikeButtons";
 import { setSight } from "../../reducers/sightReducer";
 import "../../styles/Sight.css";
+import AddBookMark from "./AddBookmark";
 
 const Sight = () => {
   const id = useParams().id;
@@ -33,13 +34,14 @@ const Sight = () => {
       </p>
     );
 
-  console.log(sight);
-
   return (
     <Container>
       <Row>
         <Col>
-          <h1>{sight.name}</h1>
+          <h1>
+            {sight.name}{" "}
+            {user && <AddBookMark userId={user.id} sight={sight} />}
+          </h1>
           Uploaded by @{sight.userId}
         </Col>
       </Row>
