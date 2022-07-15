@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect";
 import Notification from "./Notification";
 import { renderWithProviders } from "../../utils/test_utils";
-import { MemoryRouter } from "react-router-dom";
 
 describe("Notification component tests", () => {
   const id = "123asd";
@@ -18,16 +17,11 @@ describe("Notification component tests", () => {
 
   beforeEach(() => {
     // eslint-disable-next-line testing-library/no-render-in-setup
-    renderWithProviders(
-      <MemoryRouter>
-        <Notification notification={notification} />
-      </MemoryRouter>,
-      {
-        preloadedState: {
-          notifications: [notification],
-        },
-      }
-    );
+    renderWithProviders(<Notification notification={notification} />, {
+      preloadedState: {
+        notifications: [notification],
+      },
+    });
   });
 
   test("Notification and text is visible to user", () => {

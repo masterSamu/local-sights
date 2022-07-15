@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Alert } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { deleteNotification } from "../../reducers/notificationReducer";
+import Heading from "./Heading";
 
 const Notification = ({ notification }) => {
   const dispatch = useDispatch();
+  // show state is mandatory for unit tests. App works without, but tests won't.
   const [show, setShow] = useState(true);
 
   const handleClose = () => {
@@ -19,6 +21,9 @@ const Notification = ({ notification }) => {
         onClose={handleClose}
         dismissible
       >
+        <Alert.Heading>
+          <Heading type={notification.type} />
+        </Alert.Heading>
         <p>{notification.message}</p>
       </Alert>
     );
@@ -26,7 +31,7 @@ const Notification = ({ notification }) => {
 };
 
 /**
- * Convert type of notification to wanted variant for Bootstrap styling.
+ * Convert type of notification to variant for Bootstrap styling.
  * @param {"success" | "error" | "warning" | "info"} type string
  */
 const getVariant = (type) => {

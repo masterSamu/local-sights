@@ -3,7 +3,6 @@ import "@testing-library/jest-dom/extend-expect";
 import { screen } from "@testing-library/react";
 import SightCard from "./SightCard";
 import { renderWithProviders } from "../../utils/test_utils";
-import { MemoryRouter } from "react-router-dom";
 
 const likedUsers = [
   { userId: "123456asdfg", type: "positive" },
@@ -31,17 +30,12 @@ describe("Sightcard like buttons tests when user is logged in", () => {
   const update = jest.fn();
   beforeEach(() => {
     // eslint-disable-next-line testing-library/no-render-in-setup
-    renderWithProviders(
-      <MemoryRouter>
-        <SightCard sight={sight} update={update} />
-      </MemoryRouter>,
-      {
-        preloadedState: {
-          user: user,
-          sights: [sight],
-        },
-      }
-    );
+    renderWithProviders(<SightCard sight={sight} update={update} />, {
+      preloadedState: {
+        user: user,
+        sights: [sight],
+      },
+    });
   });
 
   test("Buttons are visible", () => {
@@ -56,17 +50,12 @@ describe("Sightcard like buttons tests when user is not logged in", () => {
   const update = jest.fn();
   beforeEach(() => {
     // eslint-disable-next-line testing-library/no-render-in-setup
-    renderWithProviders(
-      <MemoryRouter>
-        <SightCard sight={sight} update={update} />
-      </MemoryRouter>,
-      {
-        preloadedState: {
-          user: null,
-          sights: [sight],
-        },
-      }
-    );
+    renderWithProviders(<SightCard sight={sight} update={update} />, {
+      preloadedState: {
+        user: null,
+        sights: [sight],
+      },
+    });
   });
 
   test("Buttons are not visible", () => {

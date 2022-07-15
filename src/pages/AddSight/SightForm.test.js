@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect";
 import SightForm from "./SightForm";
 import { renderWithProviders } from "../../utils/test_utils";
-import { MemoryRouter } from "react-router-dom";
 
 const mockFile = new File(["hello"], "hello.png", { type: "image/png" });
 
@@ -46,9 +45,7 @@ describe("SightForm component tests", () => {
   beforeEach(() => {
     // eslint-disable-next-line testing-library/no-render-in-setup
     renderWithProviders(
-      <MemoryRouter>
-        <SightForm />
-      </MemoryRouter>,
+        <SightForm />,
       {
         preloadedState: {
           user: user,
