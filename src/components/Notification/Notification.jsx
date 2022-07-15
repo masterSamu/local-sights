@@ -6,6 +6,7 @@ import Heading from "./Heading";
 
 const Notification = ({ notification }) => {
   const dispatch = useDispatch();
+  // show state is mandatory for unit tests. App works without, but tests won't.
   const [show, setShow] = useState(true);
 
   const handleClose = () => {
@@ -30,7 +31,7 @@ const Notification = ({ notification }) => {
 };
 
 /**
- * Convert type of notification to wanted variant for Bootstrap styling.
+ * Convert type of notification to variant for Bootstrap styling.
  * @param {"success" | "error" | "warning" | "info"} type string
  */
 const getVariant = (type) => {

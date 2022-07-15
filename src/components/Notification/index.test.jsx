@@ -1,5 +1,4 @@
 import { screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
 import Notifications from ".";
 import { renderWithProviders } from "../../utils/test_utils";
 import userEvent from "@testing-library/user-event";
@@ -25,16 +24,11 @@ describe("Notifications container tests", () => {
 
   beforeEach(() => {
     // eslint-disable-next-line testing-library/no-render-in-setup
-    renderWithProviders(
-      <MemoryRouter>
-        <Notifications />
-      </MemoryRouter>,
-      {
-        preloadedState: {
-          notifications: notifications,
-        },
-      }
-    );
+    renderWithProviders(<Notifications />, {
+      preloadedState: {
+        notifications: notifications,
+      },
+    });
   });
   test("Three notifications are visible to user at same time", () => {
     const notifications = screen.getAllByRole("alert");
