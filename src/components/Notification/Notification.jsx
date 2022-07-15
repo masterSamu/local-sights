@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Alert } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { deleteNotification } from "../../reducers/notificationReducer";
+import Heading from "./Heading";
 
 const Notification = ({ notification }) => {
   const dispatch = useDispatch();
@@ -19,6 +20,9 @@ const Notification = ({ notification }) => {
         onClose={handleClose}
         dismissible
       >
+        <Alert.Heading>
+          <Heading type={notification.type} />
+        </Alert.Heading>
         <p>{notification.message}</p>
       </Alert>
     );
