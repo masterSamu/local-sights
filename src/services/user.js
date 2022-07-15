@@ -6,7 +6,15 @@ import {
   sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
-import { query, where, getDocs, collection, limit, doc, getDoc } from "firebase/firestore";
+import {
+  query,
+  where,
+  getDocs,
+  collection,
+  limit,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../firebase-config";
 
 const auth = getAuth();
@@ -15,7 +23,12 @@ const login = async (email, password) => {
   try {
     const signIn = await signInWithEmailAndPassword(auth, email, password);
     if (signIn.user) {
-      const user = extractUserProperties(signIn.user);
+      const userInfo = await getUserInfo(signIn.user.uid);
+      let bookmarks = [];
+      if (userInfo) {
+        bookmarks = userInfo.bookmarks;
+      }
+      const user = extractUserProperties(signIn.user, bookmarks);
       return user;
     }
     return null;
@@ -39,12 +52,13 @@ const logOut = async () => {
  *
  * @typedef {object} user
  */
-export const extractUserProperties = (userObject) => {
+export const extractUserProperties = (userObject, bookmarks) => {
   if (userObject) {
     return {
       email: userObject.email,
       username: userObject.displayName,
       id: userObject.uid,
+      bookmarks
     };
   } else {
     return null;
@@ -100,18 +114,17 @@ export const checkUsernameAvailability = async (username) => {
 
 export const getUserInfo = async (userId) => {
   try {
-
     const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log(docSnap.data())
+      console.log(docSnap.data());
       return docSnap.data();
     }
-  } catch(error) {
+  } catch (error) {
     console.log(error.message);
     return null;
   }
-}
+};
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { login, logOut };

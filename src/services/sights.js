@@ -7,8 +7,6 @@ import {
   arrayUnion,
   arrayRemove,
   addDoc,
-  query,
-  where,
 } from "firebase/firestore";
 
 const sightsRef = collection(db, "sights");
@@ -63,34 +61,6 @@ export const removeUserFromLikedUsers = async (docId, likedUserObject) => {
 };
 
 /**
- * Search bookmark for specified sight and user.
- * Can be used to check if user has bookmarked sight or not.
- * @param {string} userId id of logged user
- * @param {string} sightId id of sight
- * @returns {Object | null | string} Return bookmark object if found,
- * null if not fount or error message as string
- */
-export const getBookmarks = async (userId, sightId) => {
-  let bookmarks = null;
-  try {
-    const q = query(
-      collection(db, "users", userId, "bookmarks"),
-      where("sightId", "==", sightId)
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      if (doc.data().sightId === sightId) {
-        bookmarks = doc.data();
-      }
-    });
-    return bookmarks;
-  } catch (error) {
-    bookmarks = error.message;
-    console.log(error.message);
-  }
-};
-
-/**
  * Add bookmark to user for specific sight
  * @param {string} userId
  * @param {Object} sight required fields: id, name, imageUrl
@@ -103,21 +73,36 @@ export const addBookmark = async (userId, sight) => {
       imageUrl: sight.imageUrl,
       name: sight.name,
     };
-    const docRef = await addDoc(
-      collection(db, "users", userId, "bookmarks"),
-      bookmarkObject
-    );
-    if (docRef.id) {
-      return true;
-    }
+    const docRef = doc(db, "users", userId);
+    const updatedObject = await updateDoc(docRef, {
+      bookmarks: arrayUnion(bookmarkObject),
+    }).then(() => {
+      return bookmarkObject;
+    });
+    console.log("updated", updatedObject)
+    return updatedObject;
   } catch (error) {
     return false;
   }
 };
 
-export const removeBookmark = async (userId) => {
-  
-}
+export const removeBookmark = async (userId, sight) => {
+  try {
+    const bookmarkObject = {
+      sightId: sight.id,
+      imageUrl: sight.imageUrl,
+      name: sight.name,
+    };
+    const docRef = doc(db, "users", userId);
+    await updateDoc(docRef, {
+      bookmarks: arrayRemove(bookmarkObject),
+    }).then(() =>{
+      console.log("deleted bookmark")
+    })
+  } catch (error) {
+    return false;
+  }
+};
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll };

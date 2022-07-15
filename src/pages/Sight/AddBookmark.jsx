@@ -1,29 +1,38 @@
 import { BsFillBookmarkPlusFill, BsFillBookmarkDashFill } from "react-icons/bs";
-import { addBookmark, getBookmarks } from "../../services/sights";
-import { useState, useEffect } from "react";
+import { addBookmark, removeBookmark } from "../../services/sights";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../reducers/userReducer";
 
-const AddBookMark = ({ userId, sight }) => {
-  const [isBookmarked, setBookmarked] = useState(false);
-
-  useEffect(() => {
-    const fetch = async () => {
-      const bookmark = await getBookmarks(userId, sight?.id);
-      if (bookmark) {
-        setBookmarked(true);
-      } else {
-        setBookmarked(false);
-      }
-    };
-    fetch();
-  }, [userId, sight, isBookmarked]);
+const AddBookMark = ({ sight }) => {
+  const user = useSelector((state) => state.user);
+  const isBookmarked = user.bookmarks.find(
+    (bookmark) => bookmark.sightId === sight.id
+  );
+  const dispatch = useDispatch();
+  console.log("user", user);
 
   const handleClick = async () => {
     if (isBookmarked) {
-      // remove bookmark from db
+      const isRemoved = await removeBookmark(user.id, sight);
+      const newBookmarks = user.bookmarks.filter(
+        (bookmark) => bookmark.sightId !== sight.id
+      );
+      const newUser = { ...user, bookmarks: newBookmarks };
+      console.log("new:", newUser);
+      dispatch(setUser(newUser));
+      console.log(isRemoved);
     } else {
-      const isAdded = await addBookmark(userId, sight);
+      const bookmarkObject = await addBookmark(user.id, sight);
+      const newBookmarks = user.bookmarks.concat(bookmarkObject);
+      console.log("bookmarks", newBookmarks);
+      const newUser = { ...user, bookmarks: newBookmarks };
+
+      console.log("newuser:", newUser);
+      dispatch(setUser(newUser));
+      console.log(bookmarkObject);
+      console.log(newUser);
     }
-    setBookmarked(!isBookmarked);
   };
 
   if (isBookmarked) {
