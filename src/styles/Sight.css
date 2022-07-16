@@ -7,3 +7,7 @@
 .like-container .col {
     text-align: center;
 }
+
+.bookmark-icon {
+    cursor: pointer;
+}

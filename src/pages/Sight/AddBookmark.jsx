@@ -7,7 +7,8 @@ import { createNotification } from "../../reducers/notificationReducer";
 
 const AddBookMark = ({ sight }) => {
   const user = useSelector((state) => state.user);
-  const isBookmarked = user.bookmarks.find(
+  const bookmarks = user.bookmarks;
+  const isBookmarked = bookmarks.find(
     (bookmark) => bookmark.sightId === sight.id
   );
   const dispatch = useDispatch();
@@ -47,13 +48,19 @@ const AddBookMark = ({ sight }) => {
   if (isBookmarked) {
     return (
       <>
-        <BsFillBookmarkDashFill onClick={handleClick} />
+        <BsFillBookmarkDashFill
+          onClick={handleClick}
+          className="bookmark-icon"
+        />
       </>
     );
   } else {
     return (
       <>
-        <BsFillBookmarkPlusFill onClick={handleClick} />
+        <BsFillBookmarkPlusFill
+          onClick={handleClick}
+          className="bookmark-icon"
+        />
       </>
     );
   }

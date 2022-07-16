@@ -21,7 +21,6 @@ const Sight = () => {
     state.sights.find((sight) => sight.id === id)
   );
 
-
   const dispatch = useDispatch();
 
   const handleUpdate = (newSight) => {

@@ -25,11 +25,7 @@ const login = async (email, password) => {
     const signIn = await signInWithEmailAndPassword(auth, email, password);
     if (signIn.user) {
       const userInfo = await getUserInfo(signIn.user.uid);
-      let bookmarks = [];
-      if (userInfo) {
-        bookmarks = userInfo.bookmarks;
-      }
-      const user = extractUserProperties(signIn.user, bookmarks);
+      const user = extractUserProperties(signIn.user, userInfo);
       return user;
     }
     return null;
@@ -44,22 +40,24 @@ const logOut = async () => {
       return true;
     })
     .catch((error) => {
-      console.log(error.message);
       return false;
     });
 };
 
 /** Extract custom user object from firebase user object
- *
- * @typedef {object} user
+ *  @param {Object} userObject firebase user object
+ *  @param {Object} userInfo user document from database
+ *  @returns {Object | null} user object that contains only necessary information for app
  */
-export const extractUserProperties = (userObject, bookmarks) => {
+export const extractUserProperties = (userObject, userInfo) => {
   if (userObject) {
     return {
       email: userObject.email,
       username: userObject.displayName,
       id: userObject.uid,
-      bookmarks,
+      subscription: userInfo.subscription,
+      bookmarks: userInfo.bookmarks,
+      verified: userObject.emailVerified
     };
   } else {
     return null;
@@ -69,7 +67,6 @@ export const extractUserProperties = (userObject, bookmarks) => {
 export const createUser = async (email, password, username) => {
   try {
     const create = await createUserWithEmailAndPassword(auth, email, password);
-    console.log("create", create);
     if (create) {
       // Set username to profile
       await updateProfile(auth.currentUser, {
@@ -80,9 +77,10 @@ export const createUser = async (email, password, username) => {
         subscription: "free",
         username: username,
         bookmarks: [],
+        verified: false,
       };
       await setDoc(doc(db, "users", create.user.uid), userInfo);
-      return extractUserProperties(auth.currentUser, userInfo.bookmarks);
+      return extractUserProperties(auth.currentUser, userInfo);
     }
   } catch (error) {
     if (error.message === "Firebase: Error (auth/email-already-in-use).") {
@@ -98,7 +96,6 @@ export const sendVerificationEmail = async () => {
     await sendEmailVerification(auth.currentUser);
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
 };
@@ -118,21 +115,23 @@ export const checkUsernameAvailability = async (username) => {
     });
     return isAvailable;
   } catch (error) {
-    console.log(error);
     return error.message;
   }
 };
 
+/**
+ *
+ * @param {string} userId
+ * @returns {Object | null}
+ */
 export const getUserInfo = async (userId) => {
   try {
     const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log(docSnap.data());
       return docSnap.data();
     }
   } catch (error) {
-    console.log(error.message);
     return null;
   }
 };
