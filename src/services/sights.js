@@ -79,7 +79,6 @@ export const addBookmark = async (userId, sight) => {
     }).then(() => {
       return bookmarkObject;
     });
-    console.log("updated", updatedObject)
     return updatedObject;
   } catch (error) {
     return false;
@@ -94,11 +93,12 @@ export const removeBookmark = async (userId, sight) => {
       name: sight.name,
     };
     const docRef = doc(db, "users", userId);
-    await updateDoc(docRef, {
+    const isUpdated = await updateDoc(docRef, {
       bookmarks: arrayRemove(bookmarkObject),
-    }).then(() =>{
-      console.log("deleted bookmark")
-    })
+    }).then(() => {
+      return true;
+    });
+    return isUpdated;
   } catch (error) {
     return false;
   }

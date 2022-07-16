@@ -14,6 +14,7 @@ import {
   limit,
   doc,
   getDoc,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase-config";
 
@@ -58,7 +59,7 @@ export const extractUserProperties = (userObject, bookmarks) => {
       email: userObject.email,
       username: userObject.displayName,
       id: userObject.uid,
-      bookmarks
+      bookmarks,
     };
   } else {
     return null;
@@ -68,16 +69,26 @@ export const extractUserProperties = (userObject, bookmarks) => {
 export const createUser = async (email, password, username) => {
   try {
     const create = await createUserWithEmailAndPassword(auth, email, password);
+    console.log("create", create);
     if (create) {
       // Set username to profile
       await updateProfile(auth.currentUser, {
         displayName: username,
       });
-      return extractUserProperties(auth.currentUser);
+      // Create document to users collection
+      const userInfo = {
+        subscription: "free",
+        username: username,
+        bookmarks: [],
+      };
+      await setDoc(doc(db, "users", create.user.uid), userInfo);
+      return extractUserProperties(auth.currentUser, userInfo.bookmarks);
     }
   } catch (error) {
     if (error.message === "Firebase: Error (auth/email-already-in-use).") {
       return { error: `${email} already has registered account.` };
+    } else {
+      return { error: error.message };
     }
   }
 };
