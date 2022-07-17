@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import sightService from "./services/sights";
-import userService, { extractUserProperties } from "./services/user";
+import userService, {
+  extractUserProperties,
+  getUserInfo,
+} from "./services/user";
 import { useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import { initializeSights } from "./reducers/sightReducer";
@@ -25,7 +28,6 @@ function App() {
         const sights = await sightService.getAll();
         if (sights.length > 0) {
           dispatch(initializeSights(sights));
-          console.log(sights);
         }
       } catch (error) {
         console.log(error);
@@ -37,9 +39,10 @@ function App() {
   useEffect(() => {
     try {
       const auth = getAuth();
-      onAuthStateChanged(auth, (currentUser) => {
+      onAuthStateChanged(auth, async (currentUser) => {
         if (currentUser) {
-          const loggedUser = extractUserProperties(currentUser);
+          const userInfo = await getUserInfo(currentUser.uid);
+          const loggedUser = extractUserProperties(currentUser, userInfo);
           dispatch(setUser(loggedUser));
         } else {
           dispatch(setUser(null));

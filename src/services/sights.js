@@ -60,5 +60,49 @@ export const removeUserFromLikedUsers = async (docId, likedUserObject) => {
   }
 };
 
+/**
+ * Add bookmark to user for specific sight
+ * @param {string} userId
+ * @param {Object} sight required fields: id, name, imageUrl
+ * @returns {boolean} True if added succesfully, and false if error
+ */
+export const addBookmark = async (userId, sight) => {
+  try {
+    const bookmarkObject = {
+      sightId: sight.id,
+      imageUrl: sight.imageUrl,
+      name: sight.name,
+    };
+    const docRef = doc(db, "users", userId);
+    const updatedObject = await updateDoc(docRef, {
+      bookmarks: arrayUnion(bookmarkObject),
+    }).then(() => {
+      return bookmarkObject;
+    });
+    return updatedObject;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const removeBookmark = async (userId, sight) => {
+  try {
+    const bookmarkObject = {
+      sightId: sight.id,
+      imageUrl: sight.imageUrl,
+      name: sight.name,
+    };
+    const docRef = doc(db, "users", userId);
+    const isUpdated = await updateDoc(docRef, {
+      bookmarks: arrayRemove(bookmarkObject),
+    }).then(() => {
+      return true;
+    });
+    return isUpdated;
+  } catch (error) {
+    return false;
+  }
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll };

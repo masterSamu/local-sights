@@ -4,9 +4,10 @@ import "../../styles/SightCard.css";
 import { Link } from "react-router-dom";
 import { setSight } from "../../reducers/sightReducer";
 import LikeButtons from "./LikeButtons";
-
+import Bookmarked from "./Bookmarked";
 const SightCard = ({ sight }) => {
   const user = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
 
   const handleUpdate = (newSight) => {
@@ -15,6 +16,7 @@ const SightCard = ({ sight }) => {
 
   return (
     <Card className="sight-card">
+      <Bookmarked user={user} sightId={sight.id} />
       <Card.Img variant="top" src={sight.imageUrl} />
       <Card.Body>
         <Card.Title>{sight.name}</Card.Title>

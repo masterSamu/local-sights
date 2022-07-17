@@ -19,9 +19,8 @@ export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const auth = getAuth(app);
 
-// To use firebase emulator, change emulator value to True = emulator, false = production
-const emulator = true;
-if (emulator) {
+// Connect to emulator if app is running in development mode
+if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   connectFirestoreEmulator(db, "localhost", 8080);
   connectStorageEmulator(storage, "localhost", 9199);
   connectAuthEmulator(auth, "http://localhost:9099"); // This is mandatory format for auth
