@@ -15,11 +15,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 if (process.env.NODE_ENV === "production") {
   // eslint-disable-next-line no-unused-vars
   const appCheck = initializeAppCheck(app, {
-    provicer: new ReCaptchaV3Provider(process.env.REACT_APP_APPCHECK_KEY),
+    provider: new ReCaptchaV3Provider(process.env.REACT_APP_FIREBASE_APPCHECK_KEY),
     isTokenAutoRefreshEnabled: true,
   });
 }
