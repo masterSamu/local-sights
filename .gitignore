@@ -26,9 +26,7 @@ yarn-error.log*
 *.log
 
 .firebase*
-firebase.*
-firestore.*
-storage.rules
+firebase.txt
 firestore-debug.log
 firebase-export*
 emulator-data
