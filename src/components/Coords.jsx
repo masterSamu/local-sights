@@ -1,15 +1,29 @@
 import { Button, Container, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { createNotification } from "../reducers/notificationReducer";
 import MapboxMap from "./MapboxMap";
 
 const Coords = ({ coords, setCoords }) => {
+  const dispatch = useDispatch();
+
   const getLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.watchPosition((position) => {
+      const success = (position) => {
         setCoords({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
-      });
+      };
+
+      const error = (error) => {
+        dispatch(createNotification({ type: "error", message: error.message }));
+      };
+
+      const options = {
+        timeout: 5000,
+      };
+
+      navigator.geolocation.getCurrentPosition(success, error, options);
     }
   };
 
