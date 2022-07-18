@@ -30,7 +30,8 @@ const SightForm = () => {
     const metadata = {
       customMetadata: {
         userId: userId,
-        location: coords
+        latitude: coords.latitude,
+        longitude: coords.longitude
       }
     }
 
