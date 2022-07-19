@@ -12,7 +12,7 @@ import MapboxMap from "../../components/MapboxMap";
 import LikeButtons from "../../components/SightCard/LikeButtons";
 import { setSight } from "../../reducers/sightReducer";
 import "../../styles/Sight.css";
-import AddBookMark from "./AddBookmark";
+import AddBookMark from "../../components/AddBookmark";
 
 const Sight = () => {
   const id = useParams().id;

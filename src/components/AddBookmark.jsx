@@ -1,9 +1,9 @@
 import { BsFillBookmarkPlusFill, BsFillBookmarkDashFill } from "react-icons/bs";
-import { addBookmark, removeBookmark } from "../../services/sights";
+import { addBookmark, removeBookmark } from "../services/sights";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../reducers/userReducer";
-import { createNotification } from "../../reducers/notificationReducer";
+import { setUser } from "../reducers/userReducer";
+import { createNotification } from "../reducers/notificationReducer";
 
 const AddBookMark = ({ sight }) => {
   const user = useSelector((state) => state.user);

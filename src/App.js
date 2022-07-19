@@ -18,6 +18,7 @@ import Navigationbar from "./components/Navbar/Navigationbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreateAccount from "./pages/CreateAccount";
 import Notifications from "./components/Notification";
+import Bookmarks from "./pages/Bookmarks";
 
 function App() {
   const dispatch = useDispatch();
@@ -75,6 +76,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AddSight />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bookmarks"
+          element={
+            <ProtectedRoute>
+              <Bookmarks />
             </ProtectedRoute>
           }
         />
