@@ -1,3 +1,15 @@
 .card-container {
     gap: 2rem;
 }
+
+.bookmark-icon {
+    height: 35px;
+    width: 35px;
+    color: black;
+    opacity: 0.8;
+}
+
+.bookmark-top-right {
+    position: absolute !important;
+    right: 0 !important;
+}

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../reducers/userReducer";
 import { createNotification } from "../reducers/notificationReducer";
 
-const AddBookMark = ({ sight }) => {
+const AddBookMark = ({ sight, position }) => {
   const user = useSelector((state) => state.user);
   const bookmarks = user.bookmarks;
   const isBookmarked = bookmarks.find(
@@ -50,7 +50,7 @@ const AddBookMark = ({ sight }) => {
       <>
         <BsFillBookmarkDashFill
           onClick={handleClick}
-          className="bookmark-icon"
+          className={`bookmark-icon ${getStyleClass(position)}`}
         />
       </>
     );
@@ -59,10 +59,19 @@ const AddBookMark = ({ sight }) => {
       <>
         <BsFillBookmarkPlusFill
           onClick={handleClick}
-          className="bookmark-icon"
+          className={`bookmark-icon ${getStyleClass(position)}`}
         />
       </>
     );
+  }
+};
+
+const getStyleClass = (position) => {
+  switch (position) {
+    case "top-right":
+      return "bookmark-top-right";
+    default:
+      return "";
   }
 };
 

@@ -1,4 +1,13 @@
 .bookmark-card  {
-    text-decoration: none;
-    color: black;
+    width: 22rem !important;
+}
+
+.bookmark-card .button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bookmark-card img {
+    object-fit: cover;
 }

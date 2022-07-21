@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <Container>
       {user && <h3>{user?.username} logged in</h3>}
-      <Row xs={1} md={4} className="g-4 card-container">
+      <Row xs={1} md={4} className="g-1 card-container">
         {sights.map((sight) => {
           return (
             <SightCard key={sight.id} sight={sight} />

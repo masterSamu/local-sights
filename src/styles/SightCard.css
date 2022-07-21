@@ -1,5 +1,5 @@
 .sight-card {
-    width: 20rem !important;
+    width: 22rem !important;
     padding: 0 !important;
 }
 
@@ -35,11 +35,9 @@
     border-width: 3px;
 }
 
-.is-bookmarked-card-icon {
-    position: absolute;
-    right: 0;
-    height: 35px;
-    width: 35px;
-    color: black;
-    opacity: 0.75;
+.is-bookmarked {
+    position: absolute !important;
+    right: 0 !important;
+    cursor: default !important;
 }
+

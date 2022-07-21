@@ -12,7 +12,7 @@ const Bookmarks = () => {
       {bookmarks.length > 0 ? (
         <Row xs={1} md={4} className="g-1 card-container">
           {bookmarks.map((bookmark) => {
-            return <BookmarkCard bookmark={bookmark} />;
+            return <BookmarkCard bookmark={bookmark} key={bookmark.sightId} />;
           })}
         </Row>
       ) : (
