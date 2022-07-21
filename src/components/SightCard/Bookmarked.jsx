@@ -8,7 +8,7 @@ const Bookmarked = ({ sightId, user }) => {
     );
     
     if (isBookmarked) {
-      return <BsFillBookmarkFill className="is-bookmarked-card-icon" />;
+      return <BsFillBookmarkFill className="bookmark-icon is-bookmarked" />;
     }
   }
 };

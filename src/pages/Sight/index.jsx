@@ -11,8 +11,8 @@ import { useParams } from "react-router-dom";
 import MapboxMap from "../../components/MapboxMap";
 import LikeButtons from "../../components/SightCard/LikeButtons";
 import { setSight } from "../../reducers/sightReducer";
+import AddBookMark from "../../components/AddBookmark";
 import "../../styles/Sight.css";
-import AddBookMark from "./AddBookmark";
 
 const Sight = () => {
   const id = useParams().id;
