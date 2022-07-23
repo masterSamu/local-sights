@@ -3,6 +3,7 @@ import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -18,7 +19,9 @@ const app = initializeApp(firebaseConfig);
 if (process.env.NODE_ENV === "production") {
   // eslint-disable-next-line no-unused-vars
   const appCheck = initializeAppCheck(app, {
-    provider: new ReCaptchaV3Provider(process.env.REACT_APP_FIREBASE_APPCHECK_KEY),
+    provider: new ReCaptchaV3Provider(
+      process.env.REACT_APP_FIREBASE_APPCHECK_KEY
+    ),
     isTokenAutoRefreshEnabled: true,
   });
 }
@@ -29,6 +32,8 @@ export const auth = getAuth(app);
 
 // Connect to emulator if app is running in development mode
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+  const functions = getFunctions(app);
+  connectFunctionsEmulator(functions, "localhost", 5001);
   connectFirestoreEmulator(db, "localhost", 8080);
   connectStorageEmulator(storage, "localhost", 9199);
   connectAuthEmulator(auth, "http://localhost:9099"); // This is mandatory format for auth
