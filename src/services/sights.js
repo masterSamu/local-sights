@@ -7,12 +7,19 @@ import {
   arrayUnion,
   arrayRemove,
   addDoc,
+  orderBy,
+  query
 } from "firebase/firestore";
 
 const sightsRef = collection(db, "sights");
 
+/**
+ * Read all sights from database and order by descending positive likes
+ * @returns {Array} Sight objects
+ */
 const getAll = async () => {
-  const querySnapshot = await getDocs(sightsRef);
+  const q = query(sightsRef, orderBy("likes.positive", "desc"))
+  const querySnapshot = await getDocs(q);
   const data = [];
   querySnapshot.forEach((doc) => {
     const object = doc.data();

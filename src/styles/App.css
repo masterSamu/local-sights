@@ -14,3 +14,19 @@
     position: absolute !important;
     right: 0 !important;
 }
+
+.filter-card {
+    margin: 20px 0px;
+}
+
+.filter-card .card-body button {
+    margin: 0px 20px;
+}
+
+.filter-card .card-body button:first-of-type {
+    margin-left: 0px !important;
+}
+
+.filter-card .card-body button:last-of-type {
+    margin-right: 0px !important;
+}
