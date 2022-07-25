@@ -15,7 +15,7 @@ const SightCard = ({ sight }) => {
   };
 
   return (
-    <Card className="sight-card">
+    <Card className="sight-card" data-testid="sight-card">
       <Bookmarked user={user} sightId={sight.id} />
       <Card.Img variant="top" src={sight.imageUrl} />
       <Card.Body>

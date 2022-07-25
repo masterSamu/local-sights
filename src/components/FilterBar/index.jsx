@@ -28,11 +28,19 @@ const FilterBar = () => {
     <Card className="filter-card">
       <Card.Header>Order sights</Card.Header>
       <Card.Body>
-        <Button variant="primary" onClick={orderByPositiveLikes}>
+        <Button
+          variant="primary"
+          onClick={orderByPositiveLikes}
+          data-testid="sort-button-thumbs-up"
+        >
           <BsFillHandThumbsUpFill />
         </Button>
 
-        <Button variant="primary" onClick={orderByNegativeLikes}>
+        <Button
+          variant="primary"
+          onClick={orderByNegativeLikes}
+          data-testid="sort-button-thumbs-down"
+        >
           <BsFillHandThumbsDownFill />
         </Button>
       </Card.Body>

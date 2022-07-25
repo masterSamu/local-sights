@@ -2,7 +2,7 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { screen } from "@testing-library/react";
 import SightCard from "./SightCard";
-import { renderWithProviders } from "../../utils/test_utils";
+import { renderWithProviders, testUser } from "../../utils/test_utils";
 
 const likedUsers = [
   { userId: "123456asdfg", type: "positive" },
@@ -22,17 +22,12 @@ const sight = {
 };
 
 describe("Sightcard like buttons tests when user is logged in", () => {
-  const user = {
-    id: "123456asdfg",
-    username: "user1",
-    email: "user1@mail.com",
-  };
   const update = jest.fn();
   beforeEach(() => {
     // eslint-disable-next-line testing-library/no-render-in-setup
     renderWithProviders(<SightCard sight={sight} update={update} />, {
       preloadedState: {
-        user: user,
+        user: testUser,
         sights: [sight],
       },
     });
