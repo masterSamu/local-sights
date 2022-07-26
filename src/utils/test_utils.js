@@ -87,7 +87,7 @@ export const testSights = [
         { type: "negative", userId: "userqwerty123" },
         { type: "negative", userId: "qwertyuser12" },
       ],
-      negative: 3,
+      negative: 4,
       positive: 0,
     },
     coords: { latitude: 61.0, longitude: 23.0 },

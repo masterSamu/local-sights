@@ -24,10 +24,26 @@ const FilterBar = () => {
     dispatch(setSights(newSights));
   };
 
+  const orderByLikeCount = () => {
+    const newSights = [...sights].sort((a, b) => {
+      const aTotalLikes = a.likes.negative + a.likes.positive;
+      const bTotalLikes = b.likes.negative + b.likes.positive;
+      return bTotalLikes - aTotalLikes;
+    });
+    dispatch(setSights(newSights));
+  };
+
   return (
     <Card className="filter-card">
       <Card.Header>Order sights</Card.Header>
       <Card.Body>
+        <Button
+          variant="primary"
+          onClick={orderByLikeCount}
+          data-testid="sort-button-total-likes"
+        >
+          Total votes
+        </Button>
         <Button
           variant="primary"
           onClick={orderByPositiveLikes}

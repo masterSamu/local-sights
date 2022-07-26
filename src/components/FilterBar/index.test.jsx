@@ -53,4 +53,26 @@ describe("FilterBar tests", () => {
     expect(sightCards[1]).toHaveTextContent(testSights[1].name);
     expect(sightCards[2]).toHaveTextContent(testSights[0].name);
   });
+
+  test("Clickin 'Total votes' button order sights based on total vote count", () => {
+    renderWithProviders(<Home />, {
+      preloadedState: {
+        user: testUser,
+        sights: testSights,
+      },
+    });
+
+    const firstSight = screen.getByText("Trees");
+    expect(firstSight).toBeInTheDocument();
+
+    const sortByTotalLikesButton = screen.getByTestId("sort-button-total-likes");
+    userEvent.click(sortByTotalLikesButton);
+
+    const sightCards = screen.queryAllByTestId("sight-card");
+    expect(sightCards).toHaveLength(3);
+
+    expect(sightCards[0]).toHaveTextContent(testSights[2].name);
+    expect(sightCards[1]).toHaveTextContent(testSights[1].name);
+    expect(sightCards[2]).toHaveTextContent(testSights[0].name);
+  })
 });
