@@ -51,7 +51,6 @@ const FilterBar = () => {
         >
           <BsFillHandThumbsUpFill />
         </Button>
-
         <Button
           variant="primary"
           onClick={orderByNegativeLikes}
