@@ -21,8 +21,8 @@ describe("FilterBar sort tests", () => {
     const firstSight = screen.getByText("Trees");
     expect(firstSight).toBeInTheDocument();
 
-    const showSortButton = screen.getByText("Sort options");
-    userEvent.click(showSortButton);
+    const showFilterSortButton = screen.getByText("Filter/Sort");
+    userEvent.click(showFilterSortButton);
 
     const sortByThumsUpButton = screen.getByTestId("sort-button-thumbs-up");
     userEvent.click(sortByThumsUpButton);
@@ -47,8 +47,8 @@ describe("FilterBar sort tests", () => {
     const firstSight = screen.getByText("Trees");
     expect(firstSight).toBeInTheDocument();
 
-    const showSortButton = screen.getByText("Sort options");
-    userEvent.click(showSortButton);
+    const showFilterSortButton = screen.getByText("Filter/Sort");
+    userEvent.click(showFilterSortButton);
 
     const sortByThumsDownButton = screen.getByTestId("sort-button-thumbs-down");
     userEvent.click(sortByThumsDownButton);
@@ -73,8 +73,8 @@ describe("FilterBar sort tests", () => {
     const firstSight = screen.getByText("Trees");
     expect(firstSight).toBeInTheDocument();
 
-    const showSortButton = screen.getByText("Sort options");
-    userEvent.click(showSortButton);
+    const showFilterSortButton = screen.getByText("Filter/Sort");
+    userEvent.click(showFilterSortButton);
 
     const sortByTotalLikesButton = screen.getByTestId(
       "sort-button-total-likes"
@@ -103,8 +103,8 @@ describe("FilterBar filter tests", () => {
     const firstSight = screen.getByText("Trees");
     expect(firstSight).toBeInTheDocument();
 
-    const showFiltersButton = screen.getByText("Filter options");
-    userEvent.click(showFiltersButton);
+    const showFilterSortButton = screen.getByText("Filter/Sort");
+    userEvent.click(showFilterSortButton);
 
     const filterByHasLikesButton = screen.getByTestId(
       "filter-button-has-likes"

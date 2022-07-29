@@ -1,10 +1,8 @@
-import { useState } from "react";
-import { Button, Card } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setSights } from "../../reducers/sightReducer";
 
 const Filter = () => {
-  const [show, setShow] = useState(false);
   const sights = useSelector((state) => state.sights);
   const dispatch = useDispatch();
 
@@ -16,26 +14,15 @@ const Filter = () => {
   };
 
   return (
-    <>
-      <Card>
-        <Card.Header>
-          <Button variant="primary" onClick={() => setShow(!show)}>
-            Filter options
-          </Button>
-        </Card.Header>
-        {show && (
-          <Card.Body>
-            <Button
-              variant="primary"
-              onClick={hasLikes}
-              data-testid="filter-button-has-likes"
-            >
-              Has likes
-            </Button>
-          </Card.Body>
-        )}
-      </Card>
-    </>
+    <div className="filterbar-button-group">
+      <Button
+        variant="primary"
+        onClick={hasLikes}
+        data-testid="filter-button-has-likes"
+      >
+        Has likes
+      </Button>
+    </div>
   );
 };
 

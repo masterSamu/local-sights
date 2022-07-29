@@ -15,18 +15,21 @@
     right: 0 !important;
 }
 
-.filter-card {
+.filterbar-card {
     margin: 20px 0px;
 }
+.filterbar-button-group {
+    margin-bottom: 10px;
+}
 
-.filter-card .card-body button {
+.filterbar-button-group button {
     margin: 0px 20px;
 }
 
-.filter-card .card-body button:first-of-type {
+.filterbar-button-group button:first-of-type {
     margin-left: 0px !important;
 }
 
-.filter-card .card-body button:last-of-type {
+.filterbar-button-group button:last-of-type {
     margin-right: 0px !important;
 }
