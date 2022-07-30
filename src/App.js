@@ -19,6 +19,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CreateAccount from "./pages/CreateAccount";
 import Notifications from "./components/Notification";
 import Bookmarks from "./pages/Bookmarks";
+import SightsFromUser from "./pages/SightsForUser";
 
 function App() {
   const dispatch = useDispatch();
@@ -88,6 +89,7 @@ function App() {
           }
         />
         <Route path="/sight/:id" element={<Sight />} />
+        <Route path="/sights/:username" element={<SightsFromUser />} />
       </Routes>
     </>
   );

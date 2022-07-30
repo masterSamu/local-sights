@@ -1,9 +1,27 @@
 rules_version = '2';
+
+
+function validateSightFieldTypes(docData) {
+      return docData.name is string
+      && docData.description is string
+      && docData.imageUrl is string
+      && docData.coords is map
+      && docData.likes is map
+      && docData.user is map
+      && docData.comments is list;
+}
+
 service cloud.firestore {
   match /databases/{database}/documents {
     match /sights/{sight} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow create: if request.auth != null
+                    && request.resource.data.keys().hasAll(
+                        ["name", "description", "imageUrl", "user", "coords", "likes"]
+                    )
+                    && validateSightFieldTypes(request.resource.data) == false;
+      allow update: if request.auth != null
+                      && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["likes"]);
     }
     match /users/{userId} {
       allow read: if true;

@@ -33,7 +33,12 @@ const SightCard = ({ sight }) => {
           </Col>
         </Row>
       </Card.Body>
-      <Card.Footer>Uploaded by @{sight.userId}</Card.Footer>
+      <Card.Footer>
+        Uploaded by{" "}
+        <Link to={`/sights/${sight.user.username}`}>
+          @{sight.user.username}
+        </Link>
+      </Card.Footer>
     </Card>
   );
 };

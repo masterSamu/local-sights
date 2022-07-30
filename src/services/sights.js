@@ -8,7 +8,8 @@ import {
   arrayRemove,
   addDoc,
   orderBy,
-  query
+  query,
+  where,
 } from "firebase/firestore";
 
 const sightsRef = collection(db, "sights");
@@ -18,7 +19,28 @@ const sightsRef = collection(db, "sights");
  * @returns {Array} Sight objects
  */
 const getAll = async () => {
-  const q = query(sightsRef, orderBy("likes.positive", "desc"))
+  const q = query(sightsRef, orderBy("likes.positive", "desc"));
+  const querySnapshot = await getDocs(q);
+  const data = [];
+  querySnapshot.forEach((doc) => {
+    const object = doc.data();
+    object.id = doc.id;
+    data.push(object);
+  });
+  return data;
+};
+
+/**
+ * Get all sights uploaded by username
+ * @param {string} username
+ * @returns {[{name, id}]} sights uploaded by username
+ */
+export const getSightsUploadedByUser = async (username) => {
+  const q = query(
+    sightsRef,
+    where("user.username", "==", username),
+    orderBy("likes.positive", "desc")
+  );
   const querySnapshot = await getDocs(q);
   const data = [];
   querySnapshot.forEach((doc) => {
@@ -51,6 +73,7 @@ export const updateUsersInLikedUsers = async (docId, likedUserObject) => {
     });
     return true;
   } catch (error) {
+    console.log(error.message)
     return false;
   }
 };
@@ -63,6 +86,7 @@ export const removeUserFromLikedUsers = async (docId, likedUserObject) => {
     });
     return true;
   } catch (error) {
+    console.log(error.message)
     return false;
   }
 };
