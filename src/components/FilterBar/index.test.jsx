@@ -21,7 +21,7 @@ describe("FilterBar sort tests", () => {
     const firstSight = screen.getByText("Trees");
     expect(firstSight).toBeInTheDocument();
 
-    const showFilterSortButton = screen.getByText("Filter/Sort");
+    const showFilterSortButton = screen.getByText("Filter/Sort options");
     userEvent.click(showFilterSortButton);
 
     const sortByThumsUpButton = screen.getByTestId("sort-button-thumbs-up");
@@ -47,7 +47,7 @@ describe("FilterBar sort tests", () => {
     const firstSight = screen.getByText("Trees");
     expect(firstSight).toBeInTheDocument();
 
-    const showFilterSortButton = screen.getByText("Filter/Sort");
+    const showFilterSortButton = screen.getByText("Filter/Sort options");
     userEvent.click(showFilterSortButton);
 
     const sortByThumsDownButton = screen.getByTestId("sort-button-thumbs-down");
@@ -73,7 +73,7 @@ describe("FilterBar sort tests", () => {
     const firstSight = screen.getByText("Trees");
     expect(firstSight).toBeInTheDocument();
 
-    const showFilterSortButton = screen.getByText("Filter/Sort");
+    const showFilterSortButton = screen.getByText("Filter/Sort options");
     userEvent.click(showFilterSortButton);
 
     const sortByTotalLikesButton = screen.getByTestId(
@@ -92,7 +92,7 @@ describe("FilterBar sort tests", () => {
 });
 
 describe("FilterBar filter tests", () => {
-  test("Clicking 'Has likes' show only sights with likes", () => {
+  test("Clicking 'Has likes' show only sights with likes, and clicking again will show all", () => {
     renderWithProviders(<Home />, {
       preloadedState: {
         user: testUser,
@@ -103,7 +103,7 @@ describe("FilterBar filter tests", () => {
     const firstSight = screen.getByText("Trees");
     expect(firstSight).toBeInTheDocument();
 
-    const showFilterSortButton = screen.getByText("Filter/Sort");
+    const showFilterSortButton = screen.getByText("Filter/Sort options");
     userEvent.click(showFilterSortButton);
 
     const filterByHasLikesButton = screen.getByTestId(
@@ -111,11 +111,17 @@ describe("FilterBar filter tests", () => {
     );
     userEvent.click(filterByHasLikesButton);
 
+    // Only sights with likes are visible (filter is on)
     const sightCards = screen.queryAllByTestId("sight-card");
     expect(sightCards).toHaveLength(3);
-
     expect(sightCards[0]).toHaveTextContent(testSights[0].name);
     expect(sightCards[1]).toHaveTextContent(testSights[1].name);
     expect(sightCards[2]).toHaveTextContent(testSights[2].name);
+
+    userEvent.click(filterByHasLikesButton);
+
+    // All sights are visible (filter is off)
+    const allSightCards = screen.queryAllByTestId("sight-card");
+    expect(allSightCards).toHaveLength(4);
   });
 });

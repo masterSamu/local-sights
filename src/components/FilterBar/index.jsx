@@ -15,7 +15,8 @@ const FilterBar = () => {
     <Card className="filterbar-card">
       <Card.Header>
         <Button onClick={toggleFilterBar}>
-          FIlter/Sort <span>{show ? <BsArrowUp /> : <BsArrowDown />}</span>
+          Filter/Sort options{" "}
+          <span>{show ? <BsArrowUp /> : <BsArrowDown />}</span>
         </Button>
       </Card.Header>
       {show && (
