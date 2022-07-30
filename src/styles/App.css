@@ -14,3 +14,22 @@
     position: absolute !important;
     right: 0 !important;
 }
+
+.filterbar-card {
+    margin: 20px 0px;
+}
+.filterbar-button-group {
+    margin-bottom: 10px;
+}
+
+.filterbar-button-group button {
+    margin: 0px 20px;
+}
+
+.filterbar-button-group button:first-of-type {
+    margin-left: 0px !important;
+}
+
+.filterbar-button-group button:last-of-type {
+    margin-right: 0px !important;
+}
