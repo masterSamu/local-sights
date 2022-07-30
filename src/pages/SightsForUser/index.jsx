@@ -23,6 +23,7 @@ const SightsForUser = () => {
 
   return (
     <Container>
+      <h1>Sights uploaded by @{username}</h1>
       <FilterBar />
       <Row xs={1} md={4} className="g-1 card-container">
         {sights.map((sight) => {

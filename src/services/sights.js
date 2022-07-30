@@ -65,7 +65,6 @@ export const addSight = async (sight) => {
 
 /** Can be used for add or update */
 export const updateUsersInLikedUsers = async (docId, likedUserObject) => {
-  console.log("func: ", likedUserObject);
   try {
     const docRef = doc(db, "sights", docId);
     await updateDoc(docRef, {

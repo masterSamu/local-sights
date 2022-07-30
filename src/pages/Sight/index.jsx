@@ -7,7 +7,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import MapboxMap from "../../components/MapboxMap";
 import LikeButtons from "../../components/SightCard/LikeButtons";
 import { setSight } from "../../reducers/sightReducer";
@@ -42,7 +42,10 @@ const Sight = () => {
             {sight.name}{" "}
             {user && <AddBookMark userId={user.id} sight={sight} />}
           </h1>
-          Uploaded by @{sight.userId}
+          Uploaded by{" "}
+          <Link to={`/sights/${sight.user.username}`}>
+            @{sight.user.username}
+          </Link>
         </Col>
       </Row>
       <Image fluid src={sight.imageUrl} />
