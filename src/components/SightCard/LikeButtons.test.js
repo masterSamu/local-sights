@@ -2,24 +2,9 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { screen } from "@testing-library/react";
 import SightCard from "./SightCard";
-import { renderWithProviders, testUser } from "../../utils/test_utils";
+import { renderWithProviders, testUser, testSights } from "../../utils/test_utils";
 
-const likedUsers = [
-  { userId: "123456asdfg", type: "positive" },
-  { userId: "qwerty12345", type: "negative" },
-];
-const sight = {
-  name: "kaksi puuta",
-  description: "puut halaavat kauniisti",
-  imageUrl: "www.google.com",
-  category: "nature",
-  likes: {
-    likedUsers,
-    negative: 0,
-    positivie: 0,
-  },
-  userId: "123456asdfg",
-};
+const sight = testSights[0]
 
 describe("Sightcard like buttons tests when user is logged in", () => {
   const update = jest.fn();
@@ -28,7 +13,7 @@ describe("Sightcard like buttons tests when user is logged in", () => {
     renderWithProviders(<SightCard sight={sight} update={update} />, {
       preloadedState: {
         user: testUser,
-        sights: [sight],
+        sights: testSights,
       },
     });
   });
@@ -48,7 +33,7 @@ describe("Sightcard like buttons tests when user is not logged in", () => {
     renderWithProviders(<SightCard sight={sight} update={update} />, {
       preloadedState: {
         user: null,
-        sights: [sight],
+        sights: testSights,
       },
     });
   });
