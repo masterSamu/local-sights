@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup, ListGroup } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSights } from "../../reducers/sightReducer";
 import { searchSightsByArea } from "../../services/sights";
 import areaData from "../../utils/data/areas_in_finland.json";
 import { createNotification } from "../../reducers/notificationReducer";
 import { BsFillBackspaceFill } from "react-icons/bs";
+import { capitalizeWords } from "../../utils/string_utils";
 
 const SearchBar = () => {
+  const sights = useSelector((state) => state.sights);
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [sightsWithoutFilter, setsightsWithoutFilter] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,7 +22,9 @@ const SearchBar = () => {
     const isInAreas = areaData.areas.includes(input);
     if (input.trim().length > 2 && !isInAreas) {
       setSuggestions(
-        areaData.areas.filter((area) => area.includes(input.toLowerCase()))
+        areaData.areas.filter((area) =>
+          area.includes(capitalizeWords(input.toLowerCase()))
+        )
       );
     }
   }, [input]);
@@ -28,11 +33,16 @@ const SearchBar = () => {
     e.preventDefault();
     if (input.trim().length > 2) {
       try {
-        const newSights = await searchSightsByArea(input);
+        const newSights = await searchSightsByArea(input.toLowerCase());
+        if (sights !== sightsWithoutFilter) {
+          setsightsWithoutFilter(sights);
+        }
         dispatch(setSights(newSights));
       } catch (error) {
         dispatch(createNotification({ type: "error", message: error.message }));
       }
+    } else if (input.trim().length === 0) {
+      dispatch(setSights(sightsWithoutFilter));
     }
   };
 
@@ -43,7 +53,7 @@ const SearchBar = () => {
 
   return (
     <Form onSubmit={handleSearch}>
-      <Card>
+      <Card className="searchbar-card">
         <Card.Header>
           <InputGroup>
             <Form.Control

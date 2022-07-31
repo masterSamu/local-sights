@@ -1,21 +1,21 @@
 {
     "areas": [
-        "uusimaa",
-        "varsinais-suomi",
-        "satakunta",
-        "kanta-häme",
-        "pirkanmaa",
-        "kymenlaakso",
-        "etelä-karjala",
-        "etelä-savo",
-        "pohjois-savo",
-        "pohjois-karjala",
-        "keski-suomi",
-        "etelä-pohjanmaa",
-        "pohjanmaa",
-        "pohjois-pohjanmaa",
-        "kainuu",
-        "lappi",
-        "ahvenanmaa"
+        "Uusimaa",
+        "Varsinais-Suomi",
+        "Satakunta",
+        "Kanta-Häme",
+        "Pirkanmaa",
+        "Kymenlaakso",
+        "Etelä-Karjala",
+        "Etelä-Savo",
+        "Pohjois-Savo",
+        "Pohjois-Karjala",
+        "Keski-Suomi",
+        "Etelä-Pohjanmaa",
+        "Pohjanmaa",
+        "Pohjois-Pohjanmaa",
+        "Kainuu",
+        "Lappi",
+        "Ahvenanmaa"
     ]
 }

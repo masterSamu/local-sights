@@ -5,8 +5,8 @@ import SearchBar from "../../components/SearchBar";
 import SightCard from "../../components/SightCard/SightCard";
 
 const Home = () => {
-  //const user = useSelector((state) => state.user);
   const sights = useSelector((state) => state.sights);
+  
   return (
     <Container>
       <SearchBar />

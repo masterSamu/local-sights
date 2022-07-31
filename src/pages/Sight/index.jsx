@@ -6,7 +6,7 @@ import LikeButtons from "../../components/SightCard/LikeButtons";
 import { setSight } from "../../reducers/sightReducer";
 import AddBookMark from "../../components/AddBookmark";
 import "../../styles/Sight.css";
-import { capitalizeFirstLetter } from "../../utils/string_utils";
+import { capitalizeWords } from "../../utils/string_utils";
 
 const Sight = () => {
   const id = useParams().id;
@@ -57,9 +57,9 @@ const Sight = () => {
 
       <h2>Location</h2>
       <p>
-        {capitalizeFirstLetter(sight.location.city)},{" "}
-        {capitalizeFirstLetter(sight.location.area)},{" "}
-        {capitalizeFirstLetter(sight.location.country)}
+        {capitalizeWords(sight.location.city)},{" "}
+        {capitalizeWords(sight.location.area)},{" "}
+        {capitalizeWords(sight.location.country)}
       </p>
       <MapboxMap coords={sight.coords} zoom={10} height="40vh" width="100%" />
     </Container>

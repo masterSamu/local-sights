@@ -10,16 +10,18 @@ import {
   orderBy,
   query,
   where,
+  limit,
 } from "firebase/firestore";
 
 const sightsRef = collection(db, "sights");
 
 /**
- * Read all sights from database and order by descending positive likes
+ * Read all sights from database and order by descending positive likes,
+ * results are limited to 50 items.
  * @returns {Array} Sight objects
  */
 const getAll = async () => {
-  const q = query(sightsRef, orderBy("likes.positive", "desc"));
+  const q = query(sightsRef, orderBy("likes.positive", "desc"), limit(50));
   const querySnapshot = await getDocs(q);
   const data = [];
   querySnapshot.forEach((doc) => {
@@ -72,7 +74,7 @@ export const updateUsersInLikedUsers = async (docId, likedUserObject) => {
     });
     return true;
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     return false;
   }
 };
@@ -85,7 +87,7 @@ export const removeUserFromLikedUsers = async (docId, likedUserObject) => {
     });
     return true;
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     return false;
   }
 };
@@ -149,11 +151,11 @@ export const searchSightsByArea = async (area) => {
       data.push(object);
     });
     return data;
-  } catch(error) {
+  } catch (error) {
     console.log(error.message);
     return error.message;
   }
-}
+};
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll };
