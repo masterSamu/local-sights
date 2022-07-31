@@ -13,14 +13,38 @@ import Coords from "../../components/Coords";
 import { createSight } from "../../reducers/sightReducer";
 import { useNavigate } from "react-router-dom";
 import { createNotification } from "../../reducers/notificationReducer";
+import { useEffect } from "react";
+import axios from "axios";
 
 const SightForm = () => {
   const user = useSelector((state) => state.user);
   const [validated, setValidated] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [coords, setCoords] = useState(null);
+  const [location, setLocation] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (coords) {
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.longitude},${coords.latitude}.json?types=place&access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`;
+      axios
+        .get(url)
+        .then((response) => {
+          if (response.data) {
+            const place = response.data.features[0].place_name;
+            const placeStringAsArray = place.split(",");
+            const city = placeStringAsArray[0].trim().toLowerCase();
+            const area = placeStringAsArray[1].trim().toLowerCase();
+            const country = placeStringAsArray[2].trim().toLowerCase();
+            setLocation({city, area, country});
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
+  }, [coords]);
 
   const uploadData = async (formData) => {
     const userId = user.id;
@@ -58,6 +82,7 @@ const SightForm = () => {
             imageUrl: downloadURL,
             likes,
             comments: [],
+            location
           };
           addSight(sight).then((id) => {
             if (id) {

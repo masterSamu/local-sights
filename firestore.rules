@@ -21,7 +21,9 @@ service cloud.firestore {
             && validateSightLikesObject(docData.likes)
             && docData.user is map
             && validateSightUserObject(docData.user)
-            && docData.comments is list;
+            && docData.comments is list
+            && docData.location is map
+            && validateSightLocationObject(docData.location);
       }
 
       function validateSightCoordsObject(coords) {
@@ -35,17 +37,24 @@ service cloud.firestore {
                 && likes.positive is int;
       }
 
+      function validateSightLocationObject(location) {
+        return location.city is string
+                && location.area is string
+                && location.country is string;
+      }
+
       function validateSightUserObject(user) {
         return user.id is string
                 && user.username is string;
       }
+
 
       allow read: 
         if true;
       allow create: 
         if userIsLoggedIn(request.auth)
           && request.resource.data.keys().hasAll(
-              ["name", "description", "imageUrl", "user", "coords", "likes"]
+              ["name", "description", "imageUrl", "user", "coords", "likes", "location"]
               )
           && validateSightFieldTypes(request.resource.data);
       allow update: 
