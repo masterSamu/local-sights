@@ -134,5 +134,26 @@ export const removeBookmark = async (userId, sight) => {
   }
 };
 
+export const searchSightsByArea = async (area) => {
+  try {
+    const q = query(
+      sightsRef,
+      where("location.area", "==", area),
+      orderBy("likes.positive", "desc")
+    );
+    const querySnapshot = await getDocs(q);
+    const data = [];
+    querySnapshot.forEach((doc) => {
+      const object = doc.data();
+      object.id = doc.id;
+      data.push(object);
+    });
+    return data;
+  } catch(error) {
+    console.log(error.message);
+    return error.message;
+  }
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll };
