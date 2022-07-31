@@ -38,19 +38,24 @@ const getAll = async () => {
  * @returns {[{name, id}]} sights uploaded by username
  */
 export const getSightsUploadedByUser = async (username) => {
-  const q = query(
-    sightsRef,
-    where("user.username", "==", username),
-    orderBy("likes.positive", "desc")
-  );
-  const querySnapshot = await getDocs(q);
-  const data = [];
-  querySnapshot.forEach((doc) => {
-    const object = doc.data();
-    object.id = doc.id;
-    data.push(object);
-  });
-  return data;
+  try {
+    const q = query(
+      sightsRef,
+      where("user.username", "==", username),
+      orderBy("likes.positive", "desc")
+    );
+    const querySnapshot = await getDocs(q);
+    const data = [];
+    querySnapshot.forEach((doc) => {
+      const object = doc.data();
+      object.id = doc.id;
+      data.push(object);
+    });
+    return data;
+  } catch (error) {
+    console.log(error.message);
+    return error.message;
+  }
 };
 
 export const addSight = async (sight) => {

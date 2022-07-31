@@ -11,7 +11,7 @@ const SightsForUser = () => {
   const username = useParams().username;
   const [sights, setSights] = useState([]);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     getSightsUploadedByUser(username)
       .then((data) => setSights(data))
@@ -26,9 +26,13 @@ const SightsForUser = () => {
       <h1>Sights uploaded by @{username}</h1>
       <FilterBar />
       <Row xs={1} md={4} className="g-1 card-container">
-        {sights.map((sight) => {
-          return <SightCard key={sight.id} sight={sight} />;
-        })}
+        {sights.length > 0 ? (
+          sights.map((sight) => {
+            return <SightCard key={sight.id} sight={sight} />;
+          })
+        ) : (
+          <p>Looks like @{username} has not uplaoaded any sights yet.</p>
+        )}
       </Row>
     </Container>
   );
