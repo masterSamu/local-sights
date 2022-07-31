@@ -1,3 +1,11 @@
+.navbar-collapse {
+    flex-grow: 0 !important;
+}
+.navbar-nav a {
+    text-align: end;
+    margin-top: 15px;
+}
+
 .card-container {
     gap: 2rem;
 }
