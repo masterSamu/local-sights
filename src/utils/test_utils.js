@@ -55,8 +55,16 @@ export const testSights = [
       positive: 1,
     },
     coords: { latitude: 61.0, longitude: 23.0 },
-    userId: "user6789",
+    user: {
+      id: "user6789",
+      username: "user6789"
+    },
     comments: [],
+    location: {
+      city: "nokia",
+      area: "pirkanmaa",
+      country: "finland"
+    }
   },
   {
     name: "Rocks",
@@ -73,8 +81,16 @@ export const testSights = [
       positive: 2,
     },
     coords: { latitude: 61.0, longitude: 23.0 },
-    userId: "user6789",
+    user: {
+      id: "user6789",
+      username: "user6789"
+    },
     comments: [],
+    location: {
+      city: "nokia",
+      area: "pirkanmaa",
+      country: "finland"
+    }
   },
   {
     name: "Hills",
@@ -92,8 +108,16 @@ export const testSights = [
       positive: 0,
     },
     coords: { latitude: 61.0, longitude: 23.0 },
-    userId: "user6789",
+    user: {
+      id: "user6789",
+      username: "user6789"
+    },
     comments: [],
+    location: {
+      city: "nokia",
+      area: "pirkanmaa",
+      country: "finland"
+    }
   },
   {
     name: "Mountain",
@@ -106,7 +130,15 @@ export const testSights = [
       positive: 0,
     },
     coords: { latitude: 61.0, longitude: 23.0 },
-    userId: "user6789",
+    user: {
+      id: "user6789",
+      username: "user6789"
+    },
     comments: [],
+    location: {
+      city: "nokia",
+      area: "pirkanmaa",
+      country: "finland"
+    }
   },
 ];

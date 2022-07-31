@@ -1,16 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Container,
-  Image,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Container, Image, Row, Col } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import MapboxMap from "../../components/MapboxMap";
 import LikeButtons from "../../components/SightCard/LikeButtons";
 import { setSight } from "../../reducers/sightReducer";
 import AddBookMark from "../../components/AddBookmark";
 import "../../styles/Sight.css";
+import { capitalizeWords } from "../../utils/string_utils";
 
 const Sight = () => {
   const id = useParams().id;
@@ -60,9 +56,16 @@ const Sight = () => {
       )}
 
       <h2>Location</h2>
+      <p>
+        {capitalizeWords(sight.location.city)},{" "}
+        {capitalizeWords(sight.location.area)},{" "}
+        {capitalizeWords(sight.location.country)}
+      </p>
       <MapboxMap coords={sight.coords} zoom={10} height="40vh" width="100%" />
     </Container>
   );
 };
+
+
 
 export default Sight;

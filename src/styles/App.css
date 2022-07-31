@@ -15,9 +15,10 @@
     right: 0 !important;
 }
 
-.filterbar-card {
+.filterbar-card, .searchbar-card {
     margin: 20px 0px;
 }
+
 .filterbar-button-group {
     margin-bottom: 10px;
 }
