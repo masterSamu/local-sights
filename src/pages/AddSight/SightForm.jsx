@@ -26,14 +26,14 @@ const SightForm = () => {
     const userId = user.id;
     const name = formData.name.value;
     const storage = getStorage();
-    const sightsRef = ref(storage, `images/sights/${name.replace(/\s/g, '_')}`);
+    const sightsRef = ref(storage, `images/sights/${name.replace(/\s/g, "_")}`);
     const metadata = {
       customMetadata: {
         userId: userId,
         latitude: coords.latitude,
-        longitude: coords.longitude
-      }
-    }
+        longitude: coords.longitude,
+      },
+    };
 
     const uploadTask = uploadBytesResumable(sightsRef, photo, metadata);
     uploadTask.on(
@@ -53,7 +53,7 @@ const SightForm = () => {
           const sight = {
             name,
             description,
-            userId,
+            user: { id: userId, username: user.username },
             coords,
             imageUrl: downloadURL,
             likes,

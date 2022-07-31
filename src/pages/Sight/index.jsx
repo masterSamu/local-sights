@@ -2,12 +2,10 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   Container,
   Image,
-  Toast,
-  ToastContainer,
   Row,
   Col,
 } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import MapboxMap from "../../components/MapboxMap";
 import LikeButtons from "../../components/SightCard/LikeButtons";
 import { setSight } from "../../reducers/sightReducer";
@@ -42,7 +40,10 @@ const Sight = () => {
             {sight.name}{" "}
             {user && <AddBookMark userId={user.id} sight={sight} />}
           </h1>
-          Uploaded by @{sight.userId}
+          Uploaded by{" "}
+          <Link to={`/sights/${sight.user.username}`}>
+            @{sight.user.username}
+          </Link>
         </Col>
       </Row>
       <Image fluid src={sight.imageUrl} />
@@ -60,19 +61,6 @@ const Sight = () => {
 
       <h2>Location</h2>
       <MapboxMap coords={sight.coords} zoom={10} height="40vh" width="100%" />
-      <h2>Comments</h2>
-      <ToastContainer>
-        {sight.comments.map((comment) => {
-          return (
-            <Toast key={comment.username}>
-              <Toast.Header closeButton={false}>
-                <strong className="me-auto">{comment.username}</strong>
-              </Toast.Header>
-              <Toast.Body>{comment.message}</Toast.Body>
-            </Toast>
-          );
-        })}
-      </ToastContainer>
     </Container>
   );
 };

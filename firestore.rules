@@ -1,13 +1,64 @@
 rules_version = '2';
+
+// Validate that user is logged in
+function userIsLoggedIn(auth) {
+  return auth != null;
+}
+
+
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Sights collection
     match /sights/{sight} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      
+      function validateSightFieldTypes(docData) {
+            return docData.name is string
+            && docData.description is string
+            && docData.imageUrl is string
+            && docData.coords is map
+            && validateSightCoordsObject(docData.coords)
+            && docData.likes is map
+            && validateSightLikesObject(docData.likes)
+            && docData.user is map
+            && validateSightUserObject(docData.user)
+            && docData.comments is list;
+      }
+
+      function validateSightCoordsObject(coords) {
+        return coords.latitude is number
+                && coords.longitude is number;
+      }
+
+      function validateSightLikesObject(likes) {
+        return likes.likedUsers is list
+                && likes.negative is int
+                && likes.positive is int;
+      }
+
+      function validateSightUserObject(user) {
+        return user.id is string
+                && user.username is string;
+      }
+
+      allow read: 
+        if true;
+      allow create: 
+        if userIsLoggedIn(request.auth)
+          && request.resource.data.keys().hasAll(
+              ["name", "description", "imageUrl", "user", "coords", "likes"]
+              )
+          && validateSightFieldTypes(request.resource.data);
+      allow update: 
+        if userIsLoggedIn(request.auth)
+          && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(["likes"]);
     }
+
+
+    // users collection
     match /users/{userId} {
       allow read: if true;
-      allow create: if request.auth != null;
+      allow create: if userIsLoggedIn(request.auth);
       allow update: if request.auth.uid == userId;
     }
   }

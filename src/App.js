@@ -19,6 +19,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CreateAccount from "./pages/CreateAccount";
 import Notifications from "./components/Notification";
 import Bookmarks from "./pages/Bookmarks";
+import SightsFromUser from "./pages/SightsForUser";
+import { setNotifications } from "./reducers/notificationReducer";
 
 function App() {
   const dispatch = useDispatch();
@@ -58,6 +60,7 @@ function App() {
     const loggedOut = userService.logOut();
     if (loggedOut) {
       dispatch(setUser(null));
+      dispatch(setNotifications([]));
     } else {
       console.log("Could not log out");
     }
@@ -88,6 +91,7 @@ function App() {
           }
         />
         <Route path="/sight/:id" element={<Sight />} />
+        <Route path="/sights/:username" element={<SightsFromUser />} />
       </Routes>
     </>
   );
