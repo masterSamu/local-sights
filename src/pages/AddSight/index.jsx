@@ -8,7 +8,8 @@ const AddSight = () => {
 
   if (user) {
     return (
-      <Container>
+      <Container className="main-container">
+        <h1>Add new sight</h1>
         <SightForm />
       </Container>
     );

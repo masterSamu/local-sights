@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import CapturePhoto from "../../components/CapturePhoto";
 import {
   getStorage,
@@ -24,6 +24,7 @@ const SightForm = () => {
   const [location, setLocation] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     if (coords) {
@@ -37,7 +38,7 @@ const SightForm = () => {
             const city = placeStringAsArray[0].trim().toLowerCase();
             const area = placeStringAsArray[1].trim().toLowerCase();
             const country = placeStringAsArray[2].trim().toLowerCase();
-            setLocation({city, area, country});
+            setLocation({ city, area, country });
           }
         })
         .catch((error) => {
@@ -65,7 +66,11 @@ const SightForm = () => {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
+        if (progress === 100) {
+          setLoading(false);
+        } else if (progress < 100) {
+          setLoading(true);
+        }
       },
       (error) => {
         console.log(error);
@@ -82,7 +87,7 @@ const SightForm = () => {
             imageUrl: downloadURL,
             likes,
             comments: [],
-            location
+            location,
           };
           addSight(sight).then((id) => {
             if (id) {
@@ -175,6 +180,16 @@ const SightForm = () => {
           </Button>
         </Col>
       </Row>
+      {!isLoading && (
+        <Spinner
+          variant="secondary"
+          animation="border"
+          className="loading-spinner"
+          role="status"
+        >
+          <span hidden>Loading...</span>
+        </Spinner>
+      )}
     </Form>
   );
 };

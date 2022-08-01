@@ -7,7 +7,7 @@ const Bookmarks = () => {
   const bookmarks = useSelector((state) => state.user.bookmarks);
 
   return (
-    <Container>
+    <Container className="main-container">
       <h1>Bookmarks</h1>
       {bookmarks.length > 0 ? (
         <Row xs={1} md={4} className="g-1 card-container">

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Form, Image } from "react-bootstrap";
+import Resizer from "react-image-file-resizer";
 
 const CapturePhoto = ({ setPhoto }) => {
   const [source, setSource] = useState("");
@@ -12,14 +13,39 @@ const CapturePhoto = ({ setPhoto }) => {
         if (sizeInMb > 5) {
           alert("File size excees 5 mb");
         } else {
-          //const resized = await resizeFile(file);
-          const newUrl = URL.createObjectURL(file);
+          const resizedImgFile = await resizeImage(file);
+          const newUrl = URL.createObjectURL(resizedImgFile);
+          console.log("resized:", resizedImgFile)
           setSource(newUrl);
-          setPhoto(file);
+          setPhoto(resizedImgFile);
         }
       }
     }
   };
+
+  /**
+   * Resize image size
+   * @param {object} file 
+   * @returns {object} resized image file
+   */
+  const resizeImage = (file) =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      800,
+      800,
+      "JPEG",
+      100,
+      0,
+      (uri) => {
+        resolve(uri)
+      },
+      "file",
+      800,
+      800,
+    );
+  });
+
   return (
     <Form.Group controlId="validationFile">
       <Form.Label>Photo</Form.Label>

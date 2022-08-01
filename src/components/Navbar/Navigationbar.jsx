@@ -6,6 +6,7 @@ import ProtectedLinks from "./ProtectedLinks";
 
 const Navigationbar = ({ logOut }) => {
   const user = useSelector((state) => state.user);
+
   return (
     <Navbar bg="light" collapseOnSelect expand="sm">
       <Container>
@@ -14,7 +15,7 @@ const Navigationbar = ({ logOut }) => {
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse>
+        <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             {user ? <ProtectedLinks logOut={logOut} /> : <PublicLinks />}
           </Nav>

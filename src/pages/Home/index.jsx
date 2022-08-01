@@ -8,7 +8,7 @@ const Home = () => {
   const sights = useSelector((state) => state.sights);
   
   return (
-    <Container>
+    <Container  className="main-container">
       <SearchBar />
       <FilterBar />
       <Row xs={1} md={4} className="g-1 card-container">
