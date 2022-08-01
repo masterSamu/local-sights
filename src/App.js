@@ -21,6 +21,7 @@ import Notifications from "./components/Notification";
 import Bookmarks from "./pages/Bookmarks";
 import SightsFromUser from "./pages/SightsForUser";
 import { setNotifications } from "./reducers/notificationReducer";
+import Footer from "./components/Footer";
 
 function App() {
   const dispatch = useDispatch();
@@ -93,6 +94,7 @@ function App() {
         <Route path="/sight/:id" element={<Sight />} />
         <Route path="/sights/:username" element={<SightsFromUser />} />
       </Routes>
+      <Footer />
     </>
   );
 }
