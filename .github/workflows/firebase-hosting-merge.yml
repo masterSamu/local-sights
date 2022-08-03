@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: create env file
-        run: |
+        run:
           touch .env
           echo "${{ secrets.ENV_API_KEYS }}" >> .env
       - name: Install dependencies
