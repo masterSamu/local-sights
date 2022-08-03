@@ -9,13 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: create env file
-        run: echo "${{ secrets.ENV_API_KEYS }}" > .env
       - name: Install dependencies
         run: npm install
       - name: Build the code
         run: npm run build
+      - name: Run tests
+        run: npm run test
       - uses: FirebaseExtended/action-hosting-deploy@v0
+        env: 
+          REACT_APP_FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}
+          REACT_APP_FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}
+          REACT_APP_FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}
+          REACT_APP_FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}
+          REACT_APP_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+          REACT_APP_FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}
+          REACT_APP_FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}
+          REACT_APP_FIREBASE_APPCHECK_KEY=${{ secrets.FIREBASE_APPCHECK_KEY }}
+          REACT_APP_MAPBOX_API_KEY=${{ secrets.MAPBOX_API_KEY }}
+          REACT_APP_MAPBOX_STYLE_URL=${{ secrets.MAPBOX_STYLE_URL }}
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_LOCAL_SIGHTS }}"
