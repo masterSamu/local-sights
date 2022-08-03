@@ -31,7 +31,7 @@ const Navigationbar = ({ logOut }) => {
             {user ? (
               <ProtectedLinks logOut={logOut} setExpanded={setExpanded} />
             ) : (
-              <PublicLinks />
+              <PublicLinks setExpanded={setExpanded} />
             )}
           </Nav>
         </Navbar.Collapse>

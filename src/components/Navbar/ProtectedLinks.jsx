@@ -2,6 +2,11 @@ import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const ProtectedLinks = ({ logOut, setExpanded }) => {
+  const handleLogout = () => {
+    logOut();
+    setExpanded(false);
+  };
+
   return (
     <>
       <Nav.Link as={Link} to="/sight/add" onClick={() => setExpanded(false)}>
@@ -11,7 +16,7 @@ const ProtectedLinks = ({ logOut, setExpanded }) => {
       <Nav.Link as={Link} to="/bookmarks" onClick={() => setExpanded(false)}>
         Bookmarks
       </Nav.Link>
-      <Nav.Link onClick={logOut}>Logout</Nav.Link>
+      <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
     </>
   );
 };

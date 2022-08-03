@@ -57,13 +57,15 @@ function App() {
     }
   }, [dispatch]);
 
+  /**
+   * Log out user from system
+   */
   const logOut = () => {
     const loggedOut = userService.logOut();
     if (loggedOut) {
+      localStorage.removeItem("user");
       dispatch(setUser(null));
       dispatch(setNotifications([]));
-    } else {
-      console.log("Could not log out");
     }
   };
 

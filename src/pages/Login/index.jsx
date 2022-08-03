@@ -19,11 +19,12 @@ const Login = () => {
       navigate("/");
       setEmail("");
       setPassword("");
+      localStorage.setItem("user", "ok");
     }
   };
 
   return (
-    <Container>
+    <Container className="main-container">
       <Form onSubmit={handleLogin}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
