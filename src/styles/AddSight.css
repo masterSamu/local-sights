@@ -3,6 +3,10 @@ Form {
     width: 100%;
 }
 
+#sight-form Input {
+    margin-bottom: 10px;
+}
+
 .photo-container, .coords-container {
     padding: 10px 0px;
 }
@@ -13,3 +17,6 @@ Form {
 }
 
 
+@media only screen and (min-width: 576px) {
+
+}

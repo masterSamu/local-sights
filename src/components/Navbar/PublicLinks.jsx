@@ -1,10 +1,10 @@
 import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const PublicLinks = () => {
+const PublicLinks = ({ setExpanded }) => {
   return (
     <>
-      <Nav.Link as={Link} to="/login">
+      <Nav.Link as={Link} to="/login" onClick={() => setExpanded(false)}>
         Login
       </Nav.Link>
     </>

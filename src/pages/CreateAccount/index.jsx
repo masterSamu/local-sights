@@ -36,7 +36,7 @@ const CreateAccount = () => {
   };
 
   return (
-    <Container>
+    <Container className="main-container">
       <Form onSubmit={handleSubmit}>
         <UsernameField setUsername={setUsername} />
         <EmailField setEmail={setEmail} />

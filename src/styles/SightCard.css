@@ -1,11 +1,13 @@
+
 .sight-card {
-    width: 22rem !important;
-    max-height: 500px;
+    width: 100% !important;
+    height: 500px !important;
     padding: 0 !important;
 }
 
 .sight-card img {
-    object-fit: cover;
+    height: 65%;
+    width: 100%;
 }
 
 .sight-card .like-container .col {
@@ -34,6 +36,7 @@
 .thumb-icon-active {
     border-color: dodgerblue;
     border-width: 3px;
+    box-shadow: 0px 0px 10px  1px dodgerblue;
 }
 
 .is-bookmarked {
@@ -42,3 +45,11 @@
     cursor: default !important;
 }
 
+
+@media only screen and (min-width: 576px) {
+    .sight-card {
+        width: 31% !important;
+        height: 600px !important;
+        padding: 0 !important;
+    }
+}

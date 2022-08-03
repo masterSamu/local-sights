@@ -29,7 +29,7 @@ const Sight = () => {
     );
 
   return (
-    <Container>
+    <Container className="main-container">
       <Row>
         <Col>
           <h1>
