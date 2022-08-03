@@ -50,13 +50,34 @@
     margin-right: 0px !important;
 }
 
+.loading-spinner-row {
+    position: fixed; 
+    left: 50%; 
+    top: 45%; 
+}
+
+.loading-spinner-container {
+    position: relative;
+    left: -50%;
+    text-align: center;
+    vertical-align: middle;
+    background-color: rgb(238, 238, 238);
+    opacity: 0.9;
+    padding: 2rem;
+    width: 175px !important;
+    height: 175px !important;
+    border-radius: 1rem;
+}
+
+.loading-spinner-container p {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
 .loading-spinner {
     height: 5rem !important;
     width: 5rem !important;
     font-size: 2rem;
-    position: absolute;
-    top: 50%;
-    opacity: 0.8;
 }
 
 @media only screen and (min-width: 576px) {

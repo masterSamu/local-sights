@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
 import CapturePhoto from "../../components/CapturePhoto";
 import {
   getStorage,
@@ -66,9 +66,7 @@ const SightForm = () => {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        if (progress === 100) {
-          setLoading(false);
-        } else if (progress < 100) {
+        if (progress < 100) {
           setLoading(true);
         }
       },
@@ -91,6 +89,7 @@ const SightForm = () => {
           };
           addSight(sight).then((id) => {
             if (id) {
+              setLoading(false);
               sight.id = id;
               dispatch(createSight(sight));
               navigate("/");
@@ -180,15 +179,20 @@ const SightForm = () => {
           </Button>
         </Col>
       </Row>
-      {!isLoading && (
-        <Spinner
-          variant="secondary"
-          animation="border"
-          className="loading-spinner"
-          role="status"
-        >
-          <span hidden>Loading...</span>
-        </Spinner>
+      {isLoading && (
+        <Row className="loading-spinner-row">
+          <Container className="loading-spinner-container">
+            <Spinner
+              variant="secondary"
+              animation="border"
+              className="loading-spinner"
+              role="status"
+            >
+              <span hidden>Loading...</span>
+            </Spinner>
+            <p>Loading...</p>
+          </Container>
+        </Row>
       )}
     </Form>
   );
