@@ -12,11 +12,6 @@
     position: relative;
 }
 
-.card-container {
-    gap: 2rem;
-    justify-content: space-between;
-}
-
 .bookmark-icon {
     height: 35px;
     width: 35px;

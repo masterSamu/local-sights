@@ -1,17 +1,20 @@
 
 .sight-card {
-    width: 100% !important;
-    height: 500px !important;
-    padding: 0 !important;
+    height: 550px !important;
 }
 
 .sight-card img {
     height: 65%;
     width: 100%;
+    /*object-fit: cover;*/
 }
 
 .sight-card .like-container .col {
     justify-content: center;
+}
+
+.sight-card .card-footer a {
+    color: #013788;
 }
 
 .thumb-icon {
@@ -45,7 +48,7 @@
     cursor: default !important;
 }
 
-
+/*
 @media only screen and (min-width: 576px) {
     .sight-card {
         width: 31% !important;
@@ -53,3 +56,12 @@
         padding: 0 !important;
     }
 }
+
+@media only screen and (min-width: 768px) {
+    .sight-card {
+        width: 30% !important;
+        height: 600px !important;
+        padding: 0 !important;
+    }
+}
+*/

@@ -61,14 +61,16 @@ const SearchBar = () => {
               onChange={({ target }) => setInput(target.value)}
               value={input}
               name="search-sights"
+              aria-labelledby="search-field-label"
             />
+            <span id="search-field-label" hidden>Search field for sights</span>
             <Button
               variant="danger"
               onClick={() => setInput("")}
               aria-labelledby="clear-input-btn-label"
             >
               <span id="clear-input-btn-label" hidden>
-                Clear
+                Clear text from search
               </span>
               <BsFillBackspaceFill />
             </Button>

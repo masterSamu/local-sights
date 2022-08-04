@@ -71,31 +71,33 @@ function App() {
 
   return (
     <>
-      <Navigationbar logOut={logOut} />
-      <Notifications />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<CreateAccount />} />
-        <Route
-          path="/sight/add"
-          element={
-            <ProtectedRoute>
-              <AddSight />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/bookmarks"
-          element={
-            <ProtectedRoute>
-              <Bookmarks />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/sight/:id" element={<Sight />} />
-        <Route path="/sights/:username" element={<SightsFromUser />} />
-      </Routes>
+        <Navigationbar logOut={logOut} />
+      <main>
+        <Notifications />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<CreateAccount />} />
+          <Route
+            path="/sight/add"
+            element={
+              <ProtectedRoute>
+                <AddSight />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookmarks"
+            element={
+              <ProtectedRoute>
+                <Bookmarks />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/sight/:id" element={<Sight />} />
+          <Route path="/sights/:username" element={<SightsFromUser />} />
+        </Routes>
+      </main>
       <Footer />
     </>
   );

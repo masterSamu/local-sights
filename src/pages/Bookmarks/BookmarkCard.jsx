@@ -16,10 +16,14 @@ const BookmarkCard = ({ bookmark }) => {
       />
       <Card.Body>
         <Row>
-          <Card.Title>{bookmark.name} </Card.Title>
+          <Card.Title id={`sight-${bookmark.name}`}>{bookmark.name}</Card.Title>
         </Row>
         <Row className="button-row">
-          <Button as={Link} to={`/sight/${bookmark.sightId}`}>
+          <Button
+            as={Link}
+            to={`/sight/${bookmark.sightId}`}
+            aria-labelledby={`sight-${bookmark.name}`}
+          >
             More
           </Button>
         </Row>
