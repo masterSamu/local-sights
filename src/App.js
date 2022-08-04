@@ -22,6 +22,8 @@ import Bookmarks from "./pages/Bookmarks";
 import SightsFromUser from "./pages/SightsForUser";
 import { setNotifications } from "./reducers/notificationReducer";
 import Footer from "./components/Footer";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CookieConsent from "./components/CookieConsent";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,13 +73,15 @@ function App() {
 
   return (
     <>
-        <Navigationbar logOut={logOut} />
+      <Navigationbar logOut={logOut} />
       <main>
+        <CookieConsent />
         <Notifications />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CreateAccount />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route
             path="/sight/add"
             element={

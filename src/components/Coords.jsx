@@ -21,6 +21,8 @@ const Coords = ({ coords, setCoords }) => {
 
       const options = {
         timeout: 5000,
+        maximumAge: 10000,
+        enableHighAccuracy: true,
       };
 
       navigator.geolocation.getCurrentPosition(success, error, options);
