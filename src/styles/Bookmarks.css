@@ -1,5 +1,10 @@
-.bookmark-card  {
-    width: 22rem !important;
+.bookmark-card {
+    height: 500px !important;
+}
+
+.bookmark-card img {
+    height: 75%;
+    width: 100%;
 }
 
 .bookmark-card .button-row {

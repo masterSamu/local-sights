@@ -12,11 +12,11 @@ const Home = () => {
       <h1 hidden>Sights</h1>
       <SearchBar />
       <FilterBar />
-      <Row xs={1} md={3} className="g-1 card-container">
+      <Row xs={1} sm={1} md={2} xl={3} className="g-4 card-container">
         {sights.map((sight) => {
           return (
-            <Col>
-              <SightCard key={sight.id} sight={sight} />
+            <Col key={sight.id}>
+              <SightCard sight={sight} />
             </Col>
           );
         })}
