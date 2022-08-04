@@ -17,14 +17,17 @@ const SightCard = ({ sight }) => {
   return (
     <Card className="sight-card" data-testid="sight-card">
       <Bookmarked user={user} sightId={sight.id} />
-      <Card.Img variant="top" src={sight.imageUrl} />
+      <Card.Img variant="top" src={sight.imageUrl} alt={sight.description} />
       <Card.Body>
-        <Card.Title>{sight.name}</Card.Title>
+        <Card.Title id={`title-${sight.name}`}>{sight.name}</Card.Title>
         <Card.Subtitle>{sight.category}</Card.Subtitle>
         <Card.Text>{sight.description}</Card.Text>
         <Row>
           <Col xs={6}>
-            <Link to={`/sight/${sight.id}`}>
+            <Link
+              to={`/sight/${sight.id}`}
+              aria-labelledby={`title-${sight.name}`}
+            >
               <Button variant="primary">More...</Button>
             </Link>
           </Col>

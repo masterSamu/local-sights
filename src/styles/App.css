@@ -13,8 +13,9 @@
 }
 
 .card-container {
+    /*
     gap: 2rem;
-    justify-content: space-between;
+    justify-content: center;*/
 }
 
 .bookmark-icon {

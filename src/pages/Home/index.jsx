@@ -1,4 +1,4 @@
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import FilterBar from "../../components/FilterBar";
 import SearchBar from "../../components/SearchBar";
@@ -9,11 +9,16 @@ const Home = () => {
 
   return (
     <Container className="main-container">
+      <h1 hidden>Sights</h1>
       <SearchBar />
       <FilterBar />
-      <Row xs={1} md={4} className="g-1 card-container">
+      <Row xs={1} md={3} className="g-1 card-container">
         {sights.map((sight) => {
-          return <SightCard key={sight.id} sight={sight} />;
+          return (
+            <Col>
+              <SightCard key={sight.id} sight={sight} />
+            </Col>
+          );
         })}
       </Row>
     </Container>
