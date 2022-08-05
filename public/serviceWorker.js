@@ -1,4 +1,4 @@
-let CACHE_NAME = "version-2"; // Update version before every deployment
+let CACHE_NAME = "version-3"; // Update version before every deployment
 const urlsToCache = ["/", "/index.html"];
 
 this.addEventListener("install", (event) => {
