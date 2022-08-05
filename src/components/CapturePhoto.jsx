@@ -9,14 +9,8 @@ const CapturePhoto = ({ setPhoto }) => {
     if (target.files) {
       if (target.files.length !== 0) {
         const file = target.files[0];
-        const sizeInMb = file.size / 1024 / 1024;
         const resizedImgFile = await resizeImage(file);
-        console.log(
-          "old:",
-          sizeInMb,
-          "resized:",
-          resizedImgFile.size / 1024 / 1024
-        );
+        const sizeInMb = resizedImgFile.size / 1024 / 1024;
         if (sizeInMb > 10) {
           alert(
             "File size excees 10 mb, try to take picture with lower quality"

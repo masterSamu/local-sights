@@ -1,9 +1,10 @@
-let CACHE_NAME = "version-3"; // Update version before every deployment
-const urlsToCache = ["/", "/index.html"];
+let CACHE_NAME = "version-10"; // Update version before every deployment
+const urlsToCache = ["/", "/bookmarks"];
 
 this.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
+      console.log("Opened cache");
       return cache.addAll(urlsToCache, { cache: "reload" });
     })
   );
@@ -22,17 +23,14 @@ this.addEventListener("fetch", (event) => {
 });
 
 this.addEventListener("activate", (event) => {
-  const cacheWhiteList = [];
-  cacheWhiteList.push(CACHE_NAME);
-  event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
-        cacheNames.map((cacheName) => {
-          if (!cacheWhiteList.includes(cacheName)) {
-            return caches.delete(cacheName);
-          }
-        })
-      )
-    )
-  );
+  this.registration
+    .unregister()
+    .then(() => {
+      console.log("activated cache");
+      return this.clients.matchAll();
+    })
+    .then((clients) => {
+      clients.forEach((client) => client.navigate(client.url));
+    });
+    
 });

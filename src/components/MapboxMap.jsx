@@ -48,13 +48,16 @@ const MapboxMap = ({
         <GeolocateControl
           onGeolocate={handleGeoLocate}
           onError={handleGeoLocateError}
-          showUserLocation={true}
-          showAccuracyCircle={true}
+          positionOptions={{
+            enableHighAccuracy: true,
+            timeout: 6000,
+            maximumAge: 10000,
+          }}
         />
       )}
 
       <NavigationControl />
-      {!getLocationEnabled && coords && (
+      {coords && (
         <Marker longitude={coords.longitude} latitude={coords.latitude} />
       )}
     </Map>
