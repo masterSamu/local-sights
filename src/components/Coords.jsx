@@ -1,48 +1,43 @@
-import { Button, Container, Row } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { createNotification } from "../reducers/notificationReducer";
+import { useState } from "react";
+import { Alert, Container, Row } from "react-bootstrap";
 import MapboxMap from "./MapboxMap";
 
+import { MdGpsFixed } from "react-icons/md";
+import { BsInfoCircle } from "react-icons/bs";
+
 const Coords = ({ coords, setCoords }) => {
-  const dispatch = useDispatch();
-
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      const success = (position) => {
-        setCoords({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      };
-
-      const error = (error) => {
-        dispatch(createNotification({ type: "error", message: error.message }));
-      };
-
-      const options = {
-        timeout: 5000,
-        maximumAge: 10000,
-        enableHighAccuracy: true,
-      };
-
-      navigator.geolocation.getCurrentPosition(success, error, options);
-    }
-  };
+  const [zoom, setZoom] = useState(6); // default zoom for map
+  const [isHintVisible, setHintVisible] = useState(true);
 
   return (
     <Container className="coords-container">
       <Row>
-        <Button variant="primary" onClick={getLocation}>
-          Get location
-        </Button>
+        {isHintVisible && (
+          <Alert
+            variant="info"
+            onClose={() => setHintVisible(false)}
+            dismissible
+          >
+            <Alert.Heading>
+              <BsInfoCircle /> Hint
+            </Alert.Heading>
+            Press <MdGpsFixed /> icon from top-right of the map to locate your
+            current location
+          </Alert>
+        )}
       </Row>
-      {coords && (
-        <>
-          <Row>
-            <MapboxMap coords={coords} zoom={12} height="50vh" width="100%" />
-          </Row>
-        </>
-      )}
+
+      <Row>
+        <MapboxMap
+          coords={coords}
+          zoom={zoom}
+          height="50vh"
+          width="100%"
+          setCoords={setCoords}
+          setZoom={setZoom}
+          getLocationEnabled={true}
+        />
+      </Row>
     </Container>
   );
 };

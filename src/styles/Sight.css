@@ -1,4 +1,18 @@
 
+
+.sight-info-row {
+    flex-direction: column;
+}
+
+.sight-page-container .row {
+    margin-bottom: 1rem;
+}
+
+.sight-info-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .container .like-container {
     max-width: 400px;
     margin: 0 auto;
@@ -6,4 +20,11 @@
 
 .like-container .col {
     text-align: center;
+}
+
+@media only screen and (min-width: 576px) {
+    .sight-info-row {
+        flex-direction: row;
+        gap: 2rem;
+    }
 }

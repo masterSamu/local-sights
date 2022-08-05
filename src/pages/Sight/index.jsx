@@ -29,43 +29,61 @@ const Sight = () => {
     );
 
   return (
-    <Container className="main-container">
-      <Row>
+    <Container className="main-container sight-page-container">
+      <Row className="sight-info-row">
+        <Col className="sight-info-container">
+          <Row>
+            <Col>
+              <h1>
+                {sight.name}{" "}
+                {user && <AddBookMark userId={user.id} sight={sight} />}
+              </h1>
+              Uploaded by{" "}
+              <Link to={`/sights/${sight.user.username}`}>
+                @{sight.user.username}
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <article>
+                <h2>Description</h2>
+                <p>{sight.description}</p>
+              </article>
+            </Col>
+          </Row>
+          {user && (
+            <Row>
+              <h2>Like</h2>
+              <Row>
+                <LikeButtons sight={sight} update={handleUpdate} />
+              </Row>
+            </Row>
+          )}
+        </Col>
         <Col>
-          <h1>
-            {sight.name}{" "}
-            {user && <AddBookMark userId={user.id} sight={sight} />}
-          </h1>
-          Uploaded by{" "}
-          <Link to={`/sights/${sight.user.username}`}>
-            @{sight.user.username}
-          </Link>
+          <Image fluid rounded src={sight.imageUrl} alt={sight.description} />
         </Col>
       </Row>
-      <Image fluid src={sight.imageUrl} />
-      <article>
-        <p>{sight.description}</p>
-      </article>
-      {user && (
-        <>
-          <h2>Likes</h2>
-          <Row>
-            <LikeButtons sight={sight} update={handleUpdate} />
-          </Row>
-        </>
-      )}
+      <Row>
+        <Col>
+          <h2>Location</h2>
+          <p>
+            {capitalizeWords(sight.location.city)},{" "}
+            {capitalizeWords(sight.location.area)},{" "}
+            {capitalizeWords(sight.location.country)}
+          </p>
 
-      <h2>Location</h2>
-      <p>
-        {capitalizeWords(sight.location.city)},{" "}
-        {capitalizeWords(sight.location.area)},{" "}
-        {capitalizeWords(sight.location.country)}
-      </p>
-      <MapboxMap coords={sight.coords} zoom={10} height="40vh" width="100%" />
+        </Col>
+      </Row>
+          <MapboxMap
+            coords={sight.coords}
+            zoom={10}
+            height="40vh"
+            width="100%"
+          />
     </Container>
   );
 };
-
-
 
 export default Sight;
