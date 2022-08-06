@@ -11,6 +11,10 @@ nav {
     margin-top: 15px;
 }
 
+.navbar-brand img {
+    height: 2.4rem;
+}
+
 .main-container {
     min-height: 88vh;
     padding-bottom: 2rem;

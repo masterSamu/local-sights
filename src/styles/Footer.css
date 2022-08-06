@@ -2,7 +2,18 @@ footer {
     position: relative;
     bottom: 0;
     padding: 2rem;
-    height: 5rem;
+    height: 100%;
     background-color: #ced6dd;
     width: 100%;
+}
+
+footer .row {
+    flex-direction: column-reverse;
+    gap: 1rem;
+}
+
+@media only screen and (min-width: 576px) {
+    footer .row {
+        flex-direction: row;
+    }
 }
