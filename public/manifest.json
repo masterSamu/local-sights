@@ -1,6 +1,7 @@
 {
   "short_name": "LocalSights",
   "name": "Local Sights",
+  "description": "Find cool places only locals know",
   "icons": [
     {
       "src": "favicon.ico",
