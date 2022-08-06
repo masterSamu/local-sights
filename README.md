@@ -1,3 +1,10 @@
+# Linkki toimivaan sovellukseen
+https://local-sights.web.app/
+
+# Linkki työaikakirjanpitoon
+https://hameenamk-my.sharepoint.com/:x:/g/personal/samu20102_student_hamk_fi/Ef4nmhIuOqdCjOStqe5WzVgBXB-Q5u5IHzQFjJbM92fjMg?e=nqBySd
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

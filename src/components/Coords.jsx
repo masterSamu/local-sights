@@ -1,12 +1,17 @@
-import { Button, Container, Row } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { createNotification } from "../reducers/notificationReducer";
+import { useState } from "react";
+import { Alert, Button, Container, Row } from "react-bootstrap";
 import MapboxMap from "./MapboxMap";
+import { useDispatch } from "react-redux";
+import { MdGpsFixed } from "react-icons/md";
+import { BsInfoCircle } from "react-icons/bs";
+import { createNotification } from "../reducers/notificationReducer";
 
 const Coords = ({ coords, setCoords }) => {
+  const [zoom, setZoom] = useState(6); // default zoom for map
+  const [isHintVisible, setHintVisible] = useState(true);
   const dispatch = useDispatch();
 
-  const getLocation = () => {
+  const allowGeolocation = () => {
     if (navigator.geolocation) {
       const success = (position) => {
         setCoords({
@@ -14,15 +19,14 @@ const Coords = ({ coords, setCoords }) => {
           longitude: position.coords.longitude,
         });
       };
-
       const error = (error) => {
         dispatch(createNotification({ type: "error", message: error.message }));
       };
-
       const options = {
         timeout: 5000,
+        maximumAge: 10000,
+        enableHighAccuracy: true,
       };
-
       navigator.geolocation.getCurrentPosition(success, error, options);
     }
   };
@@ -30,17 +34,36 @@ const Coords = ({ coords, setCoords }) => {
   return (
     <Container className="coords-container">
       <Row>
-        <Button variant="primary" onClick={getLocation}>
-          Get location
-        </Button>
+        {isHintVisible && (
+          <Alert
+            variant="info"
+            onClose={() => setHintVisible(false)}
+            dismissible
+          >
+            <Alert.Heading>
+              <BsInfoCircle /> Hint
+            </Alert.Heading>
+            Press <MdGpsFixed /> icon from top-right of the map to locate your
+            current location. <br></br>If icon is disabled, get your location by
+            pressing{" "}
+            <Button size="sm" onClick={allowGeolocation} variant="primary">
+              this
+            </Button>
+          </Alert>
+        )}
       </Row>
-      {coords && (
-        <>
-          <Row>
-            <MapboxMap coords={coords} zoom={12} height="50vh" width="100%" />
-          </Row>
-        </>
-      )}
+
+      <Row>
+        <MapboxMap
+          coords={coords}
+          zoom={zoom}
+          height="50vh"
+          width="100%"
+          setCoords={setCoords}
+          setZoom={setZoom}
+          getLocationEnabled={true}
+        />
+      </Row>
     </Container>
   );
 };

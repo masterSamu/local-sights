@@ -1,9 +1,18 @@
+
+nav {
+    margin-bottom: 1rem;
+}
+
 .navbar-collapse {
     flex-grow: 0 !important;
 }
 .navbar-nav a {
     text-align: end;
     margin-top: 15px;
+}
+
+.navbar-brand img {
+    height: 2.4rem;
 }
 
 .main-container {
@@ -26,7 +35,7 @@
 }
 
 .filterbar-card, .searchbar-card {
-    margin: 20px 0px;
+    margin: 1rem 0px;
 }
 
 .filterbar-button-group {
@@ -74,6 +83,24 @@
     width: 5rem !important;
     font-size: 2rem;
 }
+
+.cookie-consent-container {
+    position: sticky;
+    top: 4rem;
+    z-index: 99;
+}
+
+.cookie-consent-container .alert-heading {
+    font-size: 1.5rem;
+}
+
+.reload-data-button-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+
 
 @media only screen and (min-width: 576px) {
     .filterbar-button-group button {

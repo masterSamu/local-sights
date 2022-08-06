@@ -19,7 +19,12 @@ const Navigationbar = ({ logOut }) => {
     >
       <Container>
         <Navbar.Brand as={Link} to="/">
-          LocalSights
+          <img
+            src={process.env.PUBLIC_URL + "/logo-without-text.png"}
+            alt="Local Sights logo with mountains"
+            aria-labelledby="brand-logo"
+          />
+          <span id="brand-logo">Local Sights</span>
         </Navbar.Brand>
 
         <Navbar.Toggle

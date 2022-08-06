@@ -9,13 +9,14 @@ const CapturePhoto = ({ setPhoto }) => {
     if (target.files) {
       if (target.files.length !== 0) {
         const file = target.files[0];
-        const sizeInMb = file.size / 1024 / 1024;
-        if (sizeInMb > 5) {
-          alert("File size excees 5 mb");
+        const resizedImgFile = await resizeImage(file);
+        const sizeInMb = resizedImgFile.size / 1024 / 1024;
+        if (sizeInMb > 10) {
+          alert(
+            "File size excees 10 mb, try to take picture with lower quality"
+          );
         } else {
-          const resizedImgFile = await resizeImage(file);
           const newUrl = URL.createObjectURL(resizedImgFile);
-          console.log("resized:", resizedImgFile)
           setSource(newUrl);
           setPhoto(resizedImgFile);
         }
@@ -25,26 +26,26 @@ const CapturePhoto = ({ setPhoto }) => {
 
   /**
    * Resize image size
-   * @param {object} file 
+   * @param {object} file
    * @returns {object} resized image file
    */
   const resizeImage = (file) =>
-  new Promise((resolve) => {
-    Resizer.imageFileResizer(
-      file,
-      800,
-      800,
-      "JPEG",
-      100,
-      0,
-      (uri) => {
-        resolve(uri)
-      },
-      "file",
-      800,
-      800,
-    );
-  });
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        500,
+        500,
+        "WEBP",
+        80,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "file",
+        500,
+        500
+      );
+    });
 
   return (
     <Form.Group controlId="validationFile">
