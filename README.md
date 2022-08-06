@@ -1,8 +1,8 @@
 # Linkki toimivaan sovellukseen
-https://local-sights.web.app/
-käyttäjätunnus jota voi käyttää:
-email: samu.uunonen@student.hamk.fi
-salasana: FullStackOpen2022
+https://local-sights.web.app/  
+käyttäjätunnus jota voi käyttää:  
+**email**: samu.uunonen@student.hamk.fi  
+**salasana:** FullStackOpen2022  
 
 # Linkki työaikakirjanpitoon
 https://hameenamk-my.sharepoint.com/:x:/g/personal/samu20102_student_hamk_fi/Ef4nmhIuOqdCjOStqe5WzVgBXB-Q5u5IHzQFjJbM92fjMg?e=nqBySd
