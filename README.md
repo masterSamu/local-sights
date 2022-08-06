@@ -1,6 +1,6 @@
 # Linkki toimivaan sovellukseen
 https://local-sights.web.app/  
-käyttäjätunnus jota voi käyttää:  
+käyttäjätunnus jota voi käyttää kirjautumiseen:  
 **email**: samu.uunonen@student.hamk.fi  
 **salasana:** FullStackOpen2022  
 
