@@ -5,8 +5,7 @@ import {
   BsFillHandThumbsUpFill,
   BsFillHandThumbsDownFill,
 } from "react-icons/bs";
-import { useState, useEffect } from "react";
-import sightService from "../../services/sights";
+import { useState } from "react";
 
 /**
  * Sort sights component
@@ -17,20 +16,6 @@ const Sort = () => {
   const dispatch = useDispatch();
   const [originalSights, setOriginalSights] = useState([]);
   const [orderedBy, setOrderedBy] = useState("");
-
-  useEffect(() => {
-    if (
-      orderedBy === "" &&
-      originalSights.length === 0 &&
-      sights.length === 0
-    ) {
-      sightService.getAll().then((data) => {
-        if (data) {
-          dispatch(setSights(data));
-        }
-      });
-    }
-  }, [orderedBy, sights, dispatch, originalSights.length]);
 
   const orderByPositiveLikes = () => {
     if (orderedBy === "positive") {

@@ -5,6 +5,7 @@ import "@testing-library/jest-dom/extend-expect";
 import SightForm from "./SightForm";
 import { renderWithProviders } from "../../utils/test_utils";
 
+
 const mockFile = new File(["hello"], "hello.png", { type: "image/png" });
 
 jest.mock("../../components/Coords", () => ({ coords, setCoords }) => (
@@ -85,9 +86,6 @@ describe("SightForm component tests", () => {
 
     const saveBtn = screen.getByText("Save");
     expect(saveBtn).toBeInTheDocument();
-
-    // This won't work, because can't access form onSubmit method
-    //userEvent.click(saveBtn);
-    //expect(onSubmit).toHaveBeenCalled();
   });
 });
+

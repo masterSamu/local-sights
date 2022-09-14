@@ -11,6 +11,7 @@ import {
   query,
   where,
   limit,
+  startAfter,
 } from "firebase/firestore";
 
 const sightsRef = collection(db, "sights");
@@ -20,7 +21,7 @@ const sightsRef = collection(db, "sights");
  * results are limited to 50 items.
  * @returns {Array} Sight objects
  */
-const getAll = async () => {
+export const getAll = async () => {
   const q = query(sightsRef, orderBy("likes.positive", "desc"), limit(50));
   const querySnapshot = await getDocs(q);
   const data = [];
@@ -30,6 +31,36 @@ const getAll = async () => {
     data.push(object);
   });
   return data;
+};
+
+/**
+ * Get first set of documents from database. Use getNextSights() function
+ * to load more items.
+ * @param {number} maxCountOfSightsPerFetch Maximum count of items loaded
+ * @returns {object} querySnapshot of firestore data
+ */
+export const getFirstSights = async (maxCountOfSightsPerFetch) => {
+  const first = query(sightsRef, orderBy("likes.positive", "desc"), limit(maxCountOfSightsPerFetch));
+  const documentSnapshots = await getDocs(first);
+  return documentSnapshots;
+};
+
+/**
+ * Get next set of documents from database. 
+ * Requires that you have first set loaded.
+ * @param {number} maxCountOfSightsPerFetch Maximum count of items loaded
+ * @param {object} lastVisible last firebase document of previous loaded set
+ * @returns {object} querySnapshot of firestore data
+ */
+export const getNextSights = async (maxCountOfSightsPerFetch, lastVisible) => {
+  const next = query(
+    sightsRef,
+    orderBy("likes.positive", "desc"),
+    startAfter(lastVisible),
+    limit(maxCountOfSightsPerFetch)
+  );
+  const querySnapshot = await getDocs(next);
+  return querySnapshot;
 };
 
 /**
@@ -161,6 +192,3 @@ export const searchSightsByArea = async (area) => {
     return error.message;
   }
 };
-
-// eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll };
