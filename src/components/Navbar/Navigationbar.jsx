@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import PublicLinks from "./PublicLinks";
 import ProtectedLinks from "./ProtectedLinks";
 import { useState } from "react";
+import OfflineBadge from "../OfflineBadge";
 
 const Navigationbar = ({ logOut }) => {
   const user = useSelector((state) => state.user);
@@ -26,6 +27,7 @@ const Navigationbar = ({ logOut }) => {
           />
           <span id="brand-logo">Local Sights</span>
         </Navbar.Brand>
+        <OfflineBadge />
 
         <Navbar.Toggle
           aria-controls="responsive-navbar-nav"
