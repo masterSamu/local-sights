@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import sightService from "./services/sights";
 import userService, {
   extractUserProperties,
   getUserInfo,
 } from "./services/user";
-import { useDispatch } from "react-redux";
+import { useDispatch,  } from "react-redux";
 import { Routes, Route } from "react-router-dom";
-import { initializeSights } from "./reducers/sightReducer";
 import "./styles/App.css";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -27,20 +25,6 @@ import CookieConsent from "./components/CookieConsent";
 
 function App() {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sights = await sightService.getAll();
-        if (sights.length > 0) {
-          dispatch(initializeSights(sights));
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, [dispatch]);
 
   useEffect(() => {
     try {
@@ -70,8 +54,6 @@ function App() {
       dispatch(setNotifications([]));
     }
   };
-
-
 
   return (
     <>
