@@ -19,7 +19,7 @@ const Navigationbar = ({ logOut }) => {
       expanded={isExpanded}
     >
       <Container>
-        <Navbar.Brand as={Link} to="/">
+        <Navbar.Brand as={Link} to="/" replace>
           <img
             src={process.env.PUBLIC_URL + "/logo-without-text.png"}
             alt="Local Sights logo with mountains"
