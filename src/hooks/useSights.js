@@ -9,6 +9,11 @@ import {
   getNextSightsByNegativeLikes,
   getFirstSightsByTotalLikes,
   getNextSightsByTotalLikes,
+  getFirstSightsByRecent,
+  getNextSightsByRecent,
+  getSightsUploadedByUser,
+  getFirstSightsUploadedByUser,
+  getNextSightsUploadedByUser,
 } from "../services/sights";
 
 const useSights = () => {
@@ -19,52 +24,63 @@ const useSights = () => {
   const [allLoaded, setAllLoaded] = useState(false);
   const maxCountPerFetch = 3;
 
+  const handleResponseForFirst = useCallback(
+    (response) => {
+      dispatch(setSights(response.sights));
+      if (response.sights.length === maxCountPerFetch) {
+        setLastDoc(response.lastDoc);
+        setAllLoaded(false);
+      } else {
+        setLastDoc(null);
+        setAllLoaded(true);
+      }
+    },
+    [dispatch]
+  );
+
+  const handleResponseForNext = (response) => {
+    dispatch(setSights([...sights, ...response.sights]));
+    if (response.sights.length === maxCountPerFetch) {
+      setLastDoc(response.lastDoc);
+      setAllLoaded(false);
+    } else {
+      setLastDoc(null);
+      setAllLoaded(true);
+    }
+  };
+
+  const handleError = useCallback(
+    (error) => {
+      dispatch(
+        createNotification({
+          id: `loadSights-error-${Date.now().toString()}`,
+          type: "error",
+          message: error.message,
+        })
+      );
+    },
+    [dispatch]
+  );
+
   const loadFirstByPositiveLikes = useCallback(() => {
     getFirstSights(maxCountPerFetch)
       .then((response) => {
-        dispatch(setSights(response.sights));
-
-        if (response.sights.length === maxCountPerFetch) {
-          setLastDoc(response.lastDoc);
-          setAllLoaded(false);
-        } else {
-          setLastDoc(null);
-          setAllLoaded(true);
-        }
+        handleResponseForFirst(response);
       })
       .catch((error) => {
-        dispatch(
-          createNotification({
-            id: `loadSights-error-${Date.now().toString()}`,
-            type: "error",
-            message: error.message,
-          })
-        );
+        handleError(error);
       });
-  }, [dispatch]);
+  }, [handleError, handleResponseForFirst]);
 
   /** Load next set of sights ordered by positive likes */
   const loadMoreByPositiveLikes = () => {
     if (lastDoc) {
       getNextSights(maxCountPerFetch, lastDoc)
         .then((response) => {
-          dispatch(setSights([...sights, ...response.sights]));
-          if (response.sights.length === maxCountPerFetch) {
-            setLastDoc(response.lastDoc);
-            setAllLoaded(false);
-          } else {
-            setLastDoc(null);
-            setAllLoaded(true);
-          }
+          handleResponseForNext(response);
         })
         .catch((error) => {
-          dispatch(
-            createNotification({
-              id: `loadSights-error-${Date.now().toString()}`,
-              type: "error",
-              message: error.message,
-            })
-          );
+          handleError(error);
         });
     }
   };
@@ -73,48 +89,22 @@ const useSights = () => {
   const loadFirstByNegativeLikes = useCallback(() => {
     getFirstSightsByNegativeLikes(maxCountPerFetch)
       .then((response) => {
-        dispatch(setSights(response.sights));
-        if (response.sights.length === maxCountPerFetch) {
-          setLastDoc(response.lastDoc);
-          setAllLoaded(false);
-        } else {
-          setLastDoc(null);
-          setAllLoaded(true);
-        }
+        handleResponseForFirst(response);
       })
       .catch((error) => {
-        dispatch(
-          createNotification({
-            id: `loadSights-error-${Date.now().toString()}`,
-            type: "error",
-            message: error.message,
-          })
-        );
+        handleError(error);
       });
-  }, [dispatch]);
+  }, [handleError, handleResponseForFirst]);
 
   /** Load next set of sights ordered by negative likes */
   const loadMoreByNegativeLikes = () => {
     if (lastDoc) {
       getNextSightsByNegativeLikes(maxCountPerFetch, lastDoc)
         .then((response) => {
-          dispatch(setSights([...sights, ...response.sights]));
-          if (response.sights.length === maxCountPerFetch) {
-            setLastDoc(response.lastDoc);
-            setAllLoaded(false);
-          } else {
-            setLastDoc(null);
-            setAllLoaded(true);
-          }
+          handleResponseForNext(response);
         })
         .catch((error) => {
-          dispatch(
-            createNotification({
-              id: `loadSights-error-${Date.now().toString()}`,
-              type: "error",
-              message: error.message,
-            })
-          );
+          handleError(error);
         });
     }
   };
@@ -123,48 +113,70 @@ const useSights = () => {
   const loadFirstByTotalLikes = useCallback(() => {
     getFirstSightsByTotalLikes(maxCountPerFetch)
       .then((response) => {
-        dispatch(setSights(response.sights));
-        if (response.sights.length === maxCountPerFetch) {
-          setLastDoc(response.lastDoc);
-          setAllLoaded(false);
-        } else {
-          setLastDoc(null);
-          setAllLoaded(true);
-        }
+        handleResponseForFirst(response);
       })
       .catch((error) => {
-        dispatch(
-          createNotification({
-            id: `loadSights-error-${Date.now().toString()}`,
-            type: "error",
-            message: error.message,
-          })
-        );
+        handleError(error);
       });
-  }, [dispatch]);
+  }, [handleError, handleResponseForFirst]);
 
   /** Load next set of sights ordered by total likes */
   const loadMoreByTotalLikes = () => {
     if (lastDoc) {
       getNextSightsByTotalLikes(maxCountPerFetch, lastDoc)
         .then((response) => {
-          dispatch(setSights([...sights, ...response.sights]));
-          if (response.sights.length === maxCountPerFetch) {
-            setLastDoc(response.lastDoc);
-            setAllLoaded(false);
-          } else {
-            setLastDoc(null);
-            setAllLoaded(true);
-          }
+          handleResponseForNext(response);
         })
         .catch((error) => {
-          dispatch(
-            createNotification({
-              id: `loadSights-error-${Date.now().toString()}`,
-              type: "error",
-              message: error.message,
-            })
-          );
+          handleError(error);
+        });
+    }
+  };
+
+  /**Load first set of sights ordered by newest */
+  const loadFirstByRecent = useCallback(() => {
+    getFirstSightsByRecent(maxCountPerFetch)
+      .then((response) => {
+        handleResponseForFirst(response);
+      })
+      .catch((error) => {
+        handleError(error);
+      });
+  }, [handleError, handleResponseForFirst]);
+
+  /** Load next set of sights ordered by newest */
+  const loadMoreByRecent = () => {
+    if (lastDoc) {
+      getNextSightsByRecent(maxCountPerFetch, lastDoc)
+        .then((response) => {
+          handleResponseForNext(response);
+        })
+        .catch((error) => {
+          handleError(error);
+        });
+    }
+  };
+
+  /** Load first set of sights uploaded by user */
+  const loadSightsUploadedByUser = (username) => {
+    getFirstSightsUploadedByUser(username)
+      .then((response) => {
+        handleResponseForFirst(response);
+      })
+      .catch((error) => {
+        handleError(error);
+      });
+  };
+
+  /** Load next set of uploaded by user */
+  const loadMoreUploadedByUser = (username) => {
+    if (lastDoc) {
+      getNextSightsUploadedByUser(username, maxCountPerFetch, lastDoc)
+        .then((response) => {
+          handleResponseForNext(response);
+        })
+        .catch((error) => {
+          handleError(error);
         });
     }
   };
@@ -181,6 +193,8 @@ const useSights = () => {
           return loadFirstByNegativeLikes();
         case "byTotalLikes":
           return loadFirstByTotalLikes();
+        case "byNewest":
+          return loadFirstByRecent();
         default:
           return loadFirstByPositiveLikes();
       }
@@ -191,6 +205,7 @@ const useSights = () => {
     loadFirstByPositiveLikes,
     loadFirstByNegativeLikes,
     loadFirstByTotalLikes,
+    loadFirstByRecent,
   ]);
 
   /** Call correct loadMore function based on sightState value  */
@@ -203,7 +218,7 @@ const useSights = () => {
       case "byTotalLikes":
         return loadMoreByTotalLikes();
       case "byNewest":
-        return;
+        return loadMoreByRecent();
       default:
         return loadMoreByPositiveLikes();
     }
@@ -213,6 +228,8 @@ const useSights = () => {
     sights,
     allLoaded,
     getLoadMoreFunction,
+    loadSightsUploadedByUser,
+    loadMoreUploadedByUser
   };
 };
 

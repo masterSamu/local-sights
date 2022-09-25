@@ -26,6 +26,10 @@ const Sort = () => {
     dispatch(setSightState("byTotalLikes"));
   };
 
+  const orderByNewest = () => {
+    dispatch(setSightState("byNewest"));
+  };
+
   return (
     <div className="filterbar-button-group">
       <Button
@@ -52,6 +56,13 @@ const Sort = () => {
         data-testid="sort-button-thumbs-down"
       >
         <BsFillHandThumbsDownFill />
+      </Button>
+      <Button
+        variant={sightState === "byRecent" ? "primary" : "outline-primary"}
+        onClick={orderByNewest}
+        data-testid="sort-button-recent"
+      >
+        Recent
       </Button>
     </div>
   );
