@@ -4,7 +4,7 @@ const sightSlice = createSlice({
   name: "sights",
   initialState: [],
   reducers: {
-    setSights(state, action) {
+    initializeSights(state, action) {
       return action.payload;
     },
     setSight(state, action) {
@@ -19,11 +19,11 @@ const sightSlice = createSlice({
   },
 });
 
-export const { setSights, setSight, appendSights } = sightSlice.actions;
+export const { initializeSights, setSight, appendSights } = sightSlice.actions;
 
-export const initializeSights = (sights) => {
+export const setSights = (sights) => {
   return async (dispatch) => {
-    dispatch(setSights(sights));
+    dispatch(initializeSights(sights));
   };
 };
 

@@ -3,6 +3,7 @@ const functions = require("firebase-functions");
 /**
  * Count likes for sight when sight is updated, and update
  * likes.positive and .negative values on database
+ * Add total like count to document
  */
 exports.updateLikeCount = functions
   .runWith({
@@ -40,9 +41,11 @@ exports.updateLikeCount = functions
         }
       });
 
+      const total = positive + negative;
+
       // Update data in firestore database
       return change.after.ref.set(
-        { likes: { ...data.likes, positive, negative } },
+        { likes: { ...data.likes, positive, negative, total } },
         { merge: true }
       );
     } else {

@@ -17,6 +17,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase-config";
+import { logLogin } from "./analytics";
 
 const auth = getAuth();
 
@@ -26,11 +27,14 @@ const login = async (email, password) => {
     if (signIn.user) {
       const userInfo = await getUserInfo(signIn.user.uid);
       const user = extractUserProperties(signIn.user, userInfo);
+
+      // Log for analytics
+      logLogin(user.uid);
       return user;
     }
     return null;
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
   }
 };
 

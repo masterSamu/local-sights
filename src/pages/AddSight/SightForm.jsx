@@ -86,6 +86,7 @@ const SightForm = () => {
             likes,
             comments: [],
             location,
+            createdAt: Date.now()
           };
           addSight(sight).then((id) => {
             if (id) {

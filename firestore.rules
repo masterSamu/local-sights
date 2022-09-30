@@ -23,7 +23,8 @@ service cloud.firestore {
             && validateSightUserObject(docData.user)
             && docData.comments is list
             && docData.location is map
-            && validateSightLocationObject(docData.location);
+            && validateSightLocationObject(docData.location)
+            && docData.createdAt is number;
       }
 
       function validateSightCoordsObject(coords) {
@@ -54,7 +55,7 @@ service cloud.firestore {
       allow create: 
         if userIsLoggedIn(request.auth)
           && request.resource.data.keys().hasAll(
-              ["name", "description", "imageUrl", "user", "coords", "likes", "location"]
+              ["name", "description", "imageUrl", "user", "coords", "likes", "location", "createdAt"]
               )
           && validateSightFieldTypes(request.resource.data);
       allow update: 
@@ -66,7 +67,7 @@ service cloud.firestore {
 
     // users collection
     match /users/{userId} {
-      allow read: if true;
+      allow read: if request.auth.uid == userId;
       allow create: if userIsLoggedIn(request.auth);
       allow update: if request.auth.uid == userId;
     }

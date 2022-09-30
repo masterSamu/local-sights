@@ -4,6 +4,7 @@ import { getStorage, connectStorageEmulator } from "firebase/storage";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -16,6 +17,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
 if (process.env.NODE_ENV === "production") {
   // eslint-disable-next-line no-unused-vars
   const appCheck = initializeAppCheck(app, {
@@ -24,6 +26,7 @@ if (process.env.NODE_ENV === "production") {
     ),
     isTokenAutoRefreshEnabled: true,
   });
+  const analytics = getAnalytics(app);
 }
 
 export const db = getFirestore(app);

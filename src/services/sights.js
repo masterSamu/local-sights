@@ -37,56 +37,102 @@ export const getAll = async () => {
  * Get first set of documents from database. Use getNextSights() function
  * to load more items.
  * @param {number} maxCountOfSightsPerFetch Maximum count of items loaded
- * @returns {object} querySnapshot of firestore data
+ * @returns {{sights: [], lastDoc: object}} querySnapshot of firestore data
  */
 export const getFirstSights = async (maxCountOfSightsPerFetch) => {
-  const first = query(sightsRef, orderBy("likes.positive", "desc"), limit(maxCountOfSightsPerFetch));
+  const first = query(
+    sightsRef,
+    orderBy("likes.positive", "desc"),
+    limit(maxCountOfSightsPerFetch)
+  );
   const documentSnapshots = await getDocs(first);
-  return documentSnapshots;
+  const sights = [];
+  documentSnapshots.forEach((doc) => {
+    sights.push({ ...doc.data(), id: doc.id });
+  });
+  const lastDoc = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+  return { sights, lastDoc };
 };
 
 /**
- * Get next set of documents from database. 
+ * Get next set of documents from database.
  * Requires that you have first set loaded.
  * @param {number} maxCountOfSightsPerFetch Maximum count of items loaded
- * @param {object} lastVisible last firebase document of previous loaded set
- * @returns {object} querySnapshot of firestore data
+ * @param {object} lastDocFromPreviousLoad last firebase document of previously loaded set
+ * @returns {{sights: [], lastDoc: object}} querySnapshot of firestore data
  */
-export const getNextSights = async (maxCountOfSightsPerFetch, lastVisible) => {
+export const getNextSights = async (
+  maxCountOfSightsPerFetch,
+  lastDocFromPreviousLoad
+) => {
   const next = query(
     sightsRef,
     orderBy("likes.positive", "desc"),
-    startAfter(lastVisible),
+    startAfter(lastDocFromPreviousLoad),
     limit(maxCountOfSightsPerFetch)
   );
   const querySnapshot = await getDocs(next);
-  return querySnapshot;
+  const sights = [];
+  querySnapshot.forEach((doc) => {
+    sights.push({ ...doc.data(), id: doc.id });
+  });
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return { sights, lastDoc };
 };
 
 /**
- * Get all sights uploaded by username
+ * Get first set of sights uploaded by username, ordered by positive likes.
  * @param {string} username
- * @returns {[{name, id}]} sights uploaded by username
+ * @param {number} maxCountOfSightsPerFetch Maximum count of items loaded
+ * @param {object} lastDocFromPreviousLoad last firebase document of previously loaded set
+ * @returns {[{sights: [], lastDoc: object}]} sights uploaded by username
  */
-export const getSightsUploadedByUser = async (username) => {
-  try {
-    const q = query(
-      sightsRef,
-      where("user.username", "==", username),
-      orderBy("likes.positive", "desc")
-    );
-    const querySnapshot = await getDocs(q);
-    const data = [];
-    querySnapshot.forEach((doc) => {
-      const object = doc.data();
-      object.id = doc.id;
-      data.push(object);
-    });
-    return data;
-  } catch (error) {
-    console.log(error.message);
-    return error.message;
-  }
+export const getFirstSightsUploadedByUser = async (
+  username,
+  maxCountOfSightsPerFetch
+) => {
+  const q = query(
+    sightsRef,
+    where("user.username", "==", username),
+    orderBy("likes.positive", "desc"),
+    limit(maxCountOfSightsPerFetch)
+  );
+  const querySnapshot = await getDocs(q);
+  const sights = [];
+  querySnapshot.forEach((doc) => {
+    sights.push({ ...doc.data(), id: doc.id });
+  });
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return { sights, lastDoc };
+};
+
+/**
+ * Get next set of documents uplaoded by user.
+ * Requires that you have first set loaded.
+ * @param {number} maxCountOfSightsPerFetch Maximum count of items loaded
+ * @param {object} lastDocFromPreviousLoad last firebase document of previously loaded set
+ * @returns {{sights: [], lastDoc: object}} querySnapshot of firestore data
+ */
+export const getNextSightsUploadedByUser = async (
+  username,
+  maxCountOfSightsPerFetch,
+  lastDocFromPreviousLoad
+) => {
+  const next = query(
+    sightsRef,
+    where("user.username", "==", username),
+    orderBy("likes.positive", "desc"),
+    startAfter(lastDocFromPreviousLoad),
+    limit(maxCountOfSightsPerFetch)
+  );
+  const querySnapshot = await getDocs(next);
+  const sights = [];
+  querySnapshot.forEach((doc) => {
+    sights.push({ ...doc.data(), id: doc.id });
+  });
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return { sights, lastDoc };
 };
 
 export const addSight = async (sight) => {
@@ -172,23 +218,114 @@ export const removeBookmark = async (userId, sight) => {
   }
 };
 
-export const searchSightsByArea = async (area) => {
-  try {
-    const q = query(
-      sightsRef,
-      where("location.area", "==", area),
-      orderBy("likes.positive", "desc")
-    );
-    const querySnapshot = await getDocs(q);
-    const data = [];
-    querySnapshot.forEach((doc) => {
-      const object = doc.data();
-      object.id = doc.id;
-      data.push(object);
-    });
-    return data;
-  } catch (error) {
-    console.log(error.message);
-    return error.message;
-  }
+/**
+ * First set of sights ordered by negative likes
+ * @returns
+ */
+export const getFirstSightsByNegativeLikes = async (
+  maxCountOfSightsPerFetch
+) => {
+  const q = query(
+    sightsRef,
+    orderBy("likes.negative", "desc"),
+    limit(maxCountOfSightsPerFetch)
+  );
+  const querySnapshot = await getDocs(q);
+  const sights = [];
+  querySnapshot.forEach((doc) => {
+    sights.push({ ...doc.data(), id: doc.id });
+  });
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return { sights, lastDoc };
+};
+
+export const getNextSightsByNegativeLikes = async (
+  maxCountOfSightsPerFetch,
+  lastDocFromPreviousLoad
+) => {
+  const next = query(
+    sightsRef,
+    orderBy("likes.negative", "desc"),
+    startAfter(lastDocFromPreviousLoad),
+    limit(maxCountOfSightsPerFetch)
+  );
+  const querySnapshot = await getDocs(next);
+  const sights = [];
+  querySnapshot.forEach((doc) => {
+    sights.push({ ...doc.data(), id: doc.id });
+  });
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return { sights, lastDoc };
+};
+
+/**
+ * First set of sights ordered by negative likes
+ * @returns
+ */
+export const getFirstSightsByTotalLikes = async (maxCountOfSightsPerFetch) => {
+  const q = query(
+    sightsRef,
+    orderBy("likes.total", "desc"),
+    limit(maxCountOfSightsPerFetch)
+  );
+  const querySnapshot = await getDocs(q);
+  const sights = [];
+  querySnapshot.forEach((doc) => {
+    sights.push({ ...doc.data(), id: doc.id });
+  });
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return { sights, lastDoc };
+};
+
+export const getNextSightsByTotalLikes = async (
+  maxCountOfSightsPerFetch,
+  lastDocFromPreviousLoad
+) => {
+  const next = query(
+    sightsRef,
+    orderBy("likes.total", "desc"),
+    startAfter(lastDocFromPreviousLoad),
+    limit(maxCountOfSightsPerFetch)
+  );
+  const querySnapshot = await getDocs(next);
+  const sights = [];
+  querySnapshot.forEach((doc) => {
+    sights.push({ ...doc.data(), id: doc.id });
+  });
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return { sights, lastDoc };
+};
+
+export const getFirstSightsByRecent = async (maxCountOfSightsPerFetch) => {
+  const q = query(
+    sightsRef,
+    orderBy("createdAt", "desc"),
+    limit(maxCountOfSightsPerFetch)
+  );
+  const querySnapshot = await getDocs(q);
+  const sights = [];
+  querySnapshot.forEach((doc) => {
+    sights.push({ ...doc.data(), id: doc.id });
+  });
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return { sights, lastDoc };
+};
+
+export const getNextSightsByRecent = async (
+  maxCountOfSightsPerFetch,
+  lastDocFromPreviousLoad
+) => {
+  const next = query(
+    sightsRef,
+    orderBy("createdAt", "desc"),
+    startAfter(lastDocFromPreviousLoad),
+    limit(maxCountOfSightsPerFetch)
+  );
+  const querySnapshot = await getDocs(next);
+  const sights = [];
+  querySnapshot.forEach((doc) => {
+    sights.push({ ...doc.data(), id: doc.id });
+  });
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+  return { sights, lastDoc };
 };
