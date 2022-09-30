@@ -22,7 +22,7 @@ const useSights = () => {
   const sightState = useSelector((state) => state.sightState);
   const [lastDoc, setLastDoc] = useState(null);
   const [allLoaded, setAllLoaded] = useState(false);
-  const maxCountPerFetch = 3;
+  const maxCountPerFetch = 6;
 
   const handleResponseForFirst = useCallback(
     (response) => {
