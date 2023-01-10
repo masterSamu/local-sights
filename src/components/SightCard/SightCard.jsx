@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 import { setSight } from "../../reducers/sightReducer";
 import LikeButtons from "./LikeButtons";
 import Bookmarked from "./Bookmarked";
+
 const SightCard = ({ sight }) => {
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
-  const handleUpdate = (newSight) => {
+  const handleLikeClick = (newSight) => {
     dispatch(setSight(newSight));
   };
 
@@ -32,7 +33,7 @@ const SightCard = ({ sight }) => {
             </Link>
           </Col>
           <Col xs={6}>
-            {user && <LikeButtons sight={sight} update={handleUpdate} />}
+            {user && <LikeButtons sight={sight} update={handleLikeClick} />}
           </Col>
         </Row>
       </Card.Body>
