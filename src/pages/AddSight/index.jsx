@@ -8,14 +8,16 @@ const AddSight = () => {
     <Container className="main-container">
       <h1>Add new sight</h1>
       <BrowserView>
-        <Alert variant="warning">
-          <p>
-          Looks like you are not using mobile device. It is possible to add
-          sights only with mobile devices. This is because we want to make sure,
-          that you are at the location of the sight and taking photo with your
-          device.
-        </p>
-        </Alert>
+        <Container>
+          <Alert variant="warning">
+            <p>
+              Looks like you are not using mobile device. It is possible to add
+              sights only with mobile devices. This is because we want to make
+              sure, that you are at the location of the sight and taking photo
+              with your device.
+            </p>
+          </Alert>
+        </Container>
       </BrowserView>
       <MobileView>
         <SightForm />

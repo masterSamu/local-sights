@@ -35,25 +35,27 @@ const Coords = ({ coords, setCoords }) => {
     <Container className="coords-container">
       <Row>
         {isHintVisible && (
-          <Alert
-            variant="info"
-            onClose={() => setHintVisible(false)}
-            dismissible
-          >
-            <Alert.Heading>
-              <BsInfoCircle /> Hint
-            </Alert.Heading>
-            Press <MdGpsFixed /> icon from top-right of the map to locate your
-            current location. <br></br>If icon is disabled, get your location by
-            pressing{" "}
-            <Button size="sm" onClick={allowGeolocation} variant="primary">
-              this
-            </Button>
-          </Alert>
+          <Container>
+            <Alert
+              variant="info"
+              onClose={() => setHintVisible(false)}
+              dismissible
+            >
+              <Alert.Heading>
+                <BsInfoCircle /> Hint
+              </Alert.Heading>
+              Press <MdGpsFixed /> icon from top-right of the map to locate your
+              current location. <br></br>If icon is disabled, get your location
+              by pressing{" "}
+              <Button size="sm" onClick={allowGeolocation} variant="primary">
+                this
+              </Button>
+            </Alert>
+          </Container>
         )}
       </Row>
 
-      <Row>
+      <Container className="px-0">
         <MapboxMap
           coords={coords}
           zoom={zoom}
@@ -63,7 +65,7 @@ const Coords = ({ coords, setCoords }) => {
           setZoom={setZoom}
           getLocationEnabled={true}
         />
-      </Row>
+      </Container>
     </Container>
   );
 };

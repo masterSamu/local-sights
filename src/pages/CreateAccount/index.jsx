@@ -19,18 +19,20 @@ const CreateAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password && email && username) {
-      const user = await createUser(email, password, username);
-      if (user?.email === email) {
-        dispatch(setUser(user));
-        const isEmailSent = await sendVerificationEmail();
-        if (isEmailSent) {
-          navigate("/");
-          const message = `Verification email has been sent to ${email}`;
-          dispatch(createNotification({ message, type: "success" }));
+      try {
+        const user = await createUser(email, password, username);
+        if (user?.email === email) {
+          dispatch(setUser(user));
+          const verificationEmailSent = await sendVerificationEmail();
+          if (verificationEmailSent) {
+            navigate("/");
+            const message = `Verification email has been sent to ${email}`;
+            dispatch(createNotification({ message, type: "success" }));
+          }
         }
-      } else if (user?.error) {
-        const message = user.error;
-        dispatch(createNotification({ message, type: "error" }));
+      } catch (error) {
+        console.error(error);
+        dispatch(createNotification({ message: error.message, type: "error" }));
       }
     }
   };

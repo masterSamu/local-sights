@@ -20,28 +20,18 @@ import { db } from "../firebase-config";
 
 const auth = getAuth();
 
-const login = async (email, password) => {
-  try {
-    const signIn = await signInWithEmailAndPassword(auth, email, password);
-    if (signIn.user) {
-      const userInfo = await getUserInfo(signIn.user.uid);
-      const user = extractUserProperties(signIn.user, userInfo);
-      return user;
-    }
-    return null;
-  } catch (error) {
-    console.log(error.message);
+export const login = async (email, password) => {
+  const signIn = await signInWithEmailAndPassword(auth, email, password);
+  if (signIn.user) {
+    const userInfo = await getUserInfo(signIn.user.uid);
+    const user = extractUserProperties(signIn.user, userInfo);
+    return user;
   }
+  return null;
 };
 
-const logOut = async () => {
-  signOut(auth)
-    .then(() => {
-      return true;
-    })
-    .catch((error) => {
-      return false;
-    });
+export const logOut = async () => {
+  await signOut(auth);
 };
 
 /** Extract custom user object from firebase user object
@@ -57,38 +47,38 @@ export const extractUserProperties = (userObject, userInfo) => {
       id: userObject.uid,
       subscription: userInfo.subscription,
       bookmarks: userInfo.bookmarks,
-      verified: userObject.emailVerified
+      verified: userObject.emailVerified,
     };
   } else {
     return null;
   }
 };
 
+/**
+ * Create new user account
+ * @param {string} email 
+ * @param {string} password 
+ * @param {string} username 
+ * @returns {object}
+ */
 export const createUser = async (email, password, username) => {
-  try {
-    const create = await createUserWithEmailAndPassword(auth, email, password);
-    if (create) {
-      // Set username to profile
-      await updateProfile(auth.currentUser, {
-        displayName: username,
-      });
-      // Create document to users collection
-      const userInfo = {
-        subscription: "free",
-        username: username,
-        bookmarks: [],
-        verified: false,
-      };
-      await setDoc(doc(db, "users", create.user.uid), userInfo);
-      return extractUserProperties(auth.currentUser, userInfo);
-    }
-  } catch (error) {
-    if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-      return { error: `${email} already has registered account.` };
-    } else {
-      return { error: error.message };
-    }
+  const create = await createUserWithEmailAndPassword(auth, email, password);
+  if (create) {
+    // Set username to profile
+    await updateProfile(auth.currentUser, {
+      displayName: username,
+    });
+    // Create document to users collection
+    const userInfo = {
+      subscription: "free",
+      username: username,
+      bookmarks: [],
+      verified: false,
+    };
+    await setDoc(doc(db, "users", create.user.uid), userInfo);
+    return extractUserProperties(auth.currentUser, userInfo);
   }
+  return null;
 };
 
 export const sendVerificationEmail = async () => {

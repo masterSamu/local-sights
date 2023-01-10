@@ -19,6 +19,9 @@ nav {
     min-height: 88vh;
     padding-bottom: 2rem;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
 }
 
 .bookmark-icon {
